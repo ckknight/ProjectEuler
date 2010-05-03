@@ -15,7 +15,7 @@ namespace Ckknight.ProjectEuler.Problems
         public override object CalculateResult()
         {
             return new Range(100, 1000)
-                .SelectMany(a => new Range(100, 1000)
+                .SelectMany(a => new Range(a, 1000)
                     .Select(b => a * b))
                 .Where(x => ConvertToDigits(x).IsPalindrome())
                 .Max();
