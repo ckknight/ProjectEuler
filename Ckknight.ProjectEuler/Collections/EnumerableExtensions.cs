@@ -69,5 +69,10 @@ namespace Ckknight.ProjectEuler.Collections
         {
             return new CombinationGenerator<T>(sequence, amount);
         }
+
+        public static string StringJoin<T>(this IEnumerable<T> sequence, string separator)
+        {
+            return string.Join(separator, sequence);
+        }
     }
 }
