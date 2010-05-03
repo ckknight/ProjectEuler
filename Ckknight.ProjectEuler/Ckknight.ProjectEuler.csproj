@@ -58,8 +58,8 @@
     <Compile Include="Problems\Problem007.cs" />
     <Compile Include="Problems\Problem008.cs" />
     <Compile Include="Problems\Problem009.cs" />
+    <Compile Include="Problems\Problem010.cs" />
     <Compile Include="Problems\ProblemAttribute.cs" />
-    <Compile Include="Problems\Range1.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
