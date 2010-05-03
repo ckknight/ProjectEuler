@@ -57,5 +57,17 @@ namespace Ckknight.ProjectEuler.Collections
             }
             return true;
         }
+
+        /// <summary>
+        /// Return a sequence of <paramref name="amount"/>-sized combinations from the given <paramref name="sequence"/>.
+        /// </summary>
+        /// <typeparam name="T">The element type.</typeparam>
+        /// <param name="sequence">The sequence to pull data from.</param>
+        /// <param name="amount">The size of each combination.</param>
+        /// <returns>A sequence of combinations.</returns>
+        public static IEnumerable<T[]> GetCombinations<T>(this IEnumerable<T> sequence, int amount)
+        {
+            return new CombinationGenerator<T>(sequence, amount);
+        }
     }
 }
