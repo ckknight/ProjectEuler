@@ -43,9 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\FibonacciSequence.cs" />
     <Compile Include="Collections\Range.cs" />
     <Compile Include="Problems\BaseProblem.cs" />
     <Compile Include="Problems\Problem001.cs" />
+    <Compile Include="Problems\Problem002.cs" />
     <Compile Include="Problems\ProblemAttribute.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
