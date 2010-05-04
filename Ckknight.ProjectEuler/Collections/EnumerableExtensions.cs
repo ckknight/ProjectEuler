@@ -74,5 +74,35 @@ namespace Ckknight.ProjectEuler.Collections
         {
             return string.Join(separator, sequence);
         }
+
+        /// <summary>
+        /// Return an enumerable that skips the last <paramref name="count"/> items of the given <paramref name="sequence"/>.
+        /// </summary>
+        /// <typeparam name="T">The element type of the sequence.</typeparam>
+        /// <param name="sequence">The sequence with which to skip the last elements of.</param>
+        /// <param name="count">The amount of items to skip at the end.</param>
+        /// <returns>The enumerable with the last <paramref name="count"/> items skipped.</returns>
+        public static IEnumerable<T> SkipLast<T>(this IEnumerable<T> sequence, int count)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+            else if (count < 0)
+            {
+                throw new ArgumentOutOfRangeException("count", count, "Must be at least 0");
+            }
+
+            Queue<T> queue = new Queue<T>(count);
+
+            foreach (T item in sequence)
+            {
+                if (queue.Count == count)
+                {
+                    yield return queue.Dequeue();
+                }
+                queue.Enqueue(item);
+            }
+        }
     }
 }
