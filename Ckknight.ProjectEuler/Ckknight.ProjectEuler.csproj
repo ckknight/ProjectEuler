@@ -52,6 +52,7 @@
     <Compile Include="Collections\PrimeFactorGenerator.cs" />
     <Compile Include="Collections\PrimeGenerator.cs" />
     <Compile Include="Collections\Range.cs" />
+    <Compile Include="MathUtilities.cs" />
     <Compile Include="Problems\BaseProblem.cs" />
     <Compile Include="Problems\Problem001.cs" />
     <Compile Include="Problems\Problem002.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Problems\Problem023.cs" />
     <Compile Include="Problems\Problem024.cs" />
     <Compile Include="Problems\Problem025.cs" />
+    <Compile Include="Problems\Problem026.cs" />
     <Compile Include="Problems\ProblemAttribute.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
