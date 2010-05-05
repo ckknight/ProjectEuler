@@ -20,7 +20,7 @@ namespace Ckknight.ProjectEuler.Collections
                 throw new ArgumentOutOfRangeException("capacity", capacity, "Must be at least 0");
             }
             _capacity = capacity;
-            _bucket = new bool[capacity];
+            _bucket = new BitArray(capacity);
         }
 
         public Int32Set(IEnumerable<int> sequence, int capacity)
@@ -42,7 +42,7 @@ namespace Ckknight.ProjectEuler.Collections
         }
 
         private readonly int _capacity;
-        private readonly bool[] _bucket;
+        private readonly BitArray _bucket;
 
         public int Capacity
         {
