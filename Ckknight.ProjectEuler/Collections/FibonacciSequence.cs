@@ -4,6 +4,20 @@ using System.Collections.Generic;
 
 namespace Ckknight.ProjectEuler.Collections
 {
+    public static class FibonacciSequence
+    {
+        /// <summary>
+        /// Create a new FibonacciSequence.
+        /// </summary>
+        /// <param name="start">The starting object to yield.</param>
+        /// <param name="otherStart">The second object to yield.</param>
+        /// <param name="adder">The function that will add two objects together.</param>
+        public static FibonacciSequence<T> Create<T>(T start, T otherStart, Func<T, T, T> adder)
+        {
+            return new FibonacciSequence<T>(start, otherStart, adder);
+        }
+    }
+
     /// <summary>
     /// Represents an object which generates an infinitely-long Fibonacci sequence.
     /// </summary>
