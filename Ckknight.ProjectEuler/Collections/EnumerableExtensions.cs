@@ -104,5 +104,84 @@ namespace Ckknight.ProjectEuler.Collections
                 queue.Enqueue(item);
             }
         }
+
+        /// <summary>
+        /// Create a new HashSet from the provided <paramref name="sequence"/>.
+        /// </summary>
+        /// <typeparam name="T">The element type of the sequence</typeparam>
+        /// <param name="sequence">The enumerable to create a HashSet from.</param>
+        /// <returns>A HashSet.</returns>
+        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> sequence)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+
+            return new HashSet<T>(sequence);
+        }
+
+        /// <summary>
+        /// Create a new HashSet from the provided <paramref name="sequence"/>.
+        /// </summary>
+        /// <typeparam name="T">The element type of the sequence</typeparam>
+        /// <param name="sequence">The enumerable to create a HashSet from.</param>
+        /// <param name="comparer">The comparer to use for the HashSet.</param>
+        /// <returns>A HashSet.</returns>
+        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> sequence, IEqualityComparer<T> comparer)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+
+            return new HashSet<T>(sequence, comparer);
+        }
+
+        /// <summary>
+        /// Create a new Int32Set based on the elements of the provided <paramref name="sequence"/>.
+        /// </summary>
+        /// <param name="sequence">The sequence to take the initial data from.</param>
+        /// <param name="capacity">The capacity of the Int32Set.</param>
+        /// <returns>An Int32Set of the given data.</returns>
+        public static Int32Set ToInt32Set(this IEnumerable<int> sequence, int capacity)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+            
+            return new Int32Set(sequence, capacity);
+        }
+
+        public static int Product(this IEnumerable<int> sequence)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+
+            int value = 1;
+            foreach (int item in sequence)
+            {
+                value *= item;
+            }
+            return value;
+        }
+
+        public static long Product(this IEnumerable<long> sequence)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+
+            long value = 1;
+            foreach (int item in sequence)
+            {
+                value *= item;
+            }
+            return value;
+        }
     }
 }

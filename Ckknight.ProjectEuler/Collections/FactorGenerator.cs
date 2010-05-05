@@ -9,6 +9,9 @@ namespace Ckknight.ProjectEuler.Collections
     public class FactorGenerator : IEnumerable<long>
     {
         public FactorGenerator(long number)
+            : this(number, true) { }
+
+        public FactorGenerator(long number, bool includeNumber)
         {
             if (number < 1)
             {
@@ -16,9 +19,11 @@ namespace Ckknight.ProjectEuler.Collections
             }
 
             _number = number;
+            _includeNumber = includeNumber;
         }
 
         private readonly long _number;
+        private readonly bool _includeNumber;
 
         #region IEnumerable<long> Members
 
@@ -27,11 +32,16 @@ namespace Ckknight.ProjectEuler.Collections
             long[] primeFactors = new PrimeFactorGenerator(_number).ToArray();
 
             HashSet<long> divisors = new HashSet<long> { 1L };
-            for (int i = 1; i <= primeFactors.Length; i++)
+            int max = primeFactors.Length;
+            if (_includeNumber)
             {
-                divisors.UnionWith(primeFactors.GetCombinations(i).Select(x => x.Aggregate((a, b) => a * b)));
+                max++;
             }
-            return divisors.OrderBy(x => x).GetEnumerator();
+            for (int i = 1; i < max; i++)
+            {
+                divisors.UnionWith(primeFactors.GetCombinations(i).Select(x => x.Product()));
+            }
+            return divisors.GetEnumerator();
         }
 
         #endregion

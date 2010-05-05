@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Ckknight.ProjectEuler.Problems;
 using System.Diagnostics;
+using Ckknight.ProjectEuler.Collections;
 
 namespace Ckknight.ProjectEuler
 {
@@ -11,7 +12,7 @@ namespace Ckknight.ProjectEuler
     {
         static void Main(string[] args)
         {
-            RunProblem(22);
+            RunProblem(23);
         }
 
         public static void RunProblem(int number)

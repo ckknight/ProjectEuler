@@ -75,30 +75,42 @@ namespace Ckknight.ProjectEuler.Collections
             {
                 yield break;
             }
-
-            T[] array = _source as T[] ?? _source.ToArray();
-
-            int length = array.Length;
-            if (_amount > length)
+            else if (_amount == 1)
             {
-                yield break;
-            }
+                T[] result = new T[1];
 
-            int[] positions = new int[_amount];
-            for (int i = 0; i < _amount - 1; i++)
-            {
-                positions[i] = i;
-            }
-            positions[_amount - 1] = _amount - 2;
-
-            while (UpdatePositions(positions, length, _amount - 1))
-            {
-                T[] result = new T[_amount];
-                for (int i = 0; i < _amount; i++)
+                foreach (T item in _source)
                 {
-                    result[i] = array[positions[i]];
+                    result[0] = item;
+                    yield return result;
                 }
-                yield return result;
+            }
+            else
+            {
+                T[] array = _source as T[] ?? _source.ToArray();
+
+                int length = array.Length;
+                if (_amount > length)
+                {
+                    yield break;
+                }
+
+                int[] positions = new int[_amount];
+                for (int i = 0; i < _amount - 1; i++)
+                {
+                    positions[i] = i;
+                }
+                positions[_amount - 1] = _amount - 2;
+
+                while (UpdatePositions(positions, length, _amount - 1))
+                {
+                    T[] result = new T[_amount];
+                    for (int i = 0; i < _amount; i++)
+                    {
+                        result[i] = array[positions[i]];
+                    }
+                    yield return result;
+                }
             }
         }
 
