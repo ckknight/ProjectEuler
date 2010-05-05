@@ -154,6 +154,11 @@ namespace Ckknight.ProjectEuler.Collections
             return new Int32Set(sequence, capacity);
         }
 
+        /// <summary>
+        /// Return the mathematical product of the sequence of ints.
+        /// </summary>
+        /// <param name="sequence">The sequence of ints.</param>
+        /// <returns>The product of all the ints.</returns>
         public static int Product(this IEnumerable<int> sequence)
         {
             if (sequence == null)
@@ -169,6 +174,11 @@ namespace Ckknight.ProjectEuler.Collections
             return value;
         }
 
+        /// <summary>
+        /// Return the mathematical product of the sequence of longs.
+        /// </summary>
+        /// <param name="sequence">The sequence of longs.</param>
+        /// <returns>The product of all the longs.</returns>
         public static long Product(this IEnumerable<long> sequence)
         {
             if (sequence == null)
@@ -182,6 +192,22 @@ namespace Ckknight.ProjectEuler.Collections
                 value *= item;
             }
             return value;
+        }
+
+        /// <summary>
+        /// Return all permutations of the given <paramref name="sequence"/>.
+        /// </summary>
+        /// <typeparam name="T">The element type of the sequence.</typeparam>
+        /// <param name="sequence">The sequence to permute.</param>
+        /// <returns>An enumerable containing all permutations of the sequence.</returns>
+        public static IEnumerable<T[]> GetPermutations<T>(this IEnumerable<T> sequence)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+
+            return new PermutationGenerator<T>(sequence);
         }
     }
 }
