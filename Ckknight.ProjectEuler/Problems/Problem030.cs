@@ -24,16 +24,8 @@ namespace Ckknight.ProjectEuler.Problems
 
         public override object CalculateResult()
         {
-            int maxDigits = 1;
-            while (true)
-            {
-                int result = maxDigits * MathUtilities.Pow(9, Exponent);
-                if (result < MathUtilities.Pow(10, maxDigits) - 1)
-                {
-                    break;
-                }
-                maxDigits++;
-            }
+            int maxDigits = new Range(1, int.MaxValue)
+                .First(n => n * MathUtilities.Pow(9, Exponent) < MathUtilities.Pow(10, n) - 1);
 
             return new Range(2, maxDigits * MathUtilities.Pow(9, Exponent))
                 .Where(n => MathUtilities.ToDigitList(n)
