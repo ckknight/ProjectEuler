@@ -47,6 +47,7 @@
     <Compile Include="Collections\EnumerableExtensions.cs" />
     <Compile Include="Collections\FactorGenerator.cs" />
     <Compile Include="Collections\FibonacciSequence.cs" />
+    <Compile Include="Collections\ImmutableSequence.cs" />
     <Compile Include="Collections\Int32Set.cs" />
     <Compile Include="Collections\PermutationGenerator.cs" />
     <Compile Include="Collections\PrimeFactorGenerator.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Problems\Problem028.cs" />
     <Compile Include="Problems\Problem029.cs" />
     <Compile Include="Problems\Problem030.cs" />
+    <Compile Include="Problems\Problem031.cs" />
     <Compile Include="Problems\ProblemAttribute.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
