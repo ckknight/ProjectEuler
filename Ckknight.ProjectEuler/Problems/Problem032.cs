@@ -28,18 +28,18 @@ namespace Ckknight.ProjectEuler.Problems
                 .Select(a => new
                 {
                     Value = a,
-                    Digits = MathUtilities.ToDigitList(a),
+                    Digits = MathUtilities.ToDigits(a),
                 })
                 .Where(a => !a.Digits.Contains(0))
-                .Where(a => a.Digits.Distinct().Count() == a.Digits.Count)
+                .Where(a => a.Digits.Distinct().Count() == a.Digits.Length)
                 .SelectMany(a => new Range(123, 9876, true)
                     .Select(b => new
                     {
                         Value = b,
-                        Digits = MathUtilities.ToDigitList(b),
+                        Digits = MathUtilities.ToDigits(b),
                     })
                     .Where(b => !b.Digits.Contains(0))
-                    .Where(b => b.Digits.Distinct().Count() == b.Digits.Count)
+                    .Where(b => b.Digits.Distinct().Count() == b.Digits.Length)
                     .Where(b => !a.Digits.Any(d => b.Digits.Contains(d)))
                     .Select(b => new
                     {
@@ -48,12 +48,12 @@ namespace Ckknight.ProjectEuler.Problems
                         c = new
                         {
                             Value = a.Value * b.Value,
-                            Digits = MathUtilities.ToDigitList(a.Value * b.Value)
+                            Digits = MathUtilities.ToDigits(a.Value * b.Value)
                         }
                     }))
-                .Where(x => x.a.Digits.Count + x.b.Digits.Count + x.c.Digits.Count == 9)
+                .Where(x => x.a.Digits.Length + x.b.Digits.Length + x.c.Digits.Length == 9)
                 .Where(x => !x.c.Digits.Contains(0))
-                .Where(x => x.c.Digits.Distinct().Count() == x.c.Digits.Count)
+                .Where(x => x.c.Digits.Distinct().Count() == x.c.Digits.Length)
                 .Where(x => !x.a.Digits.Any(d => x.c.Digits.Contains(d)))
                 .Where(x => !x.b.Digits.Any(d => x.c.Digits.Contains(d)))
                 .Select(x => x.c.Value)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Collections;
 
 namespace Ckknight.ProjectEuler
 {
@@ -39,41 +40,26 @@ namespace Ckknight.ProjectEuler
             return GreatestCommonDivisor(value, other) == 1;
         }
 
-        public static List<int> ToDigitList(int value)
+        public static int[] ToDigits(long value)
         {
             if (value <= 0)
             {
                 throw new ArgumentOutOfRangeException("value", value, "Must be at least 1");
             }
-            var list = new List<int>();
 
-            while (value > 0)
+            int max = (int)Math.Floor(Math.Log10(value)) + 1;
+            var array = new int[max];
+
+            for (int i = 0; i < max; i++)
             {
-                list.Add(value % 10);
+                array[i] = (int)(value % 10);
                 value /= 10;
             }
 
-            return list;
+            return array;
         }
 
-        public static List<int> ToDigitList(long value)
-        {
-            if (value <= 0)
-            {
-                throw new ArgumentOutOfRangeException("value", value, "Must be at least 1");
-            }
-            var list = new List<int>();
-
-            while (value > 0)
-            {
-                list.Add((int)(value % 10));
-                value /= 10;
-            }
-
-            return list;
-        }
-
-        public static long FromDigitList(IEnumerable<int> digits)
+        public static long FromDigits(IEnumerable<int> digits)
         {
             if (digits == null)
             {
@@ -87,6 +73,69 @@ namespace Ckknight.ProjectEuler
             {
                 total += digit * power;
                 power *= 10;
+            }
+
+            return total;
+        }
+
+        public static BitArray ToBits(long value)
+        {
+            if (value <= 0)
+            {
+                throw new ArgumentOutOfRangeException("value", value, "Must be at least 1");
+            }
+
+            int max = (int)Math.Floor(Math.Log(value, 2)) + 1;
+            var array = new BitArray(max, false);
+
+            for (int i = 0; i < max; i++)
+            {
+                array[i] = (value & 1) == 1;
+                value /= 2;
+            }
+
+            return array;
+        }
+
+        public static long FromBits(BitArray bits)
+        {
+            if (bits == null)
+            {
+                throw new ArgumentNullException("bits");
+            }
+
+            long total = 0;
+            int power = 0;
+
+            foreach (bool bit in bits)
+            {
+                if (bit)
+                {
+                    total += (1L << power);
+                }
+                power++;
+            }
+
+            return total;
+        }
+
+        public static long FromBits(IEnumerable<bool> bits)
+        {
+            if (bits == null)
+            {
+                throw new ArgumentNullException("bits");
+            }
+
+            long total = 0;
+            int power = 0;
+
+            foreach (bool bit in bits)
+            {
+                if (bit)
+                {
+                    total += (1L << power);
+                }
+                power++;
             }
 
             return total;

@@ -29,8 +29,8 @@ namespace Ckknight.ProjectEuler.Problems
                 .SelectMany(n => new Range(n + 1, maximum, true)
                     .Select(d => new
                     {
-                        Numerator = MathUtilities.ToDigitList(n).ToArray(),
-                        Denominator = MathUtilities.ToDigitList(d).ToArray()
+                        Numerator = MathUtilities.ToDigits(n),
+                        Denominator = MathUtilities.ToDigits(d)
                     }))
                 .Where(f => f.Numerator[0] != 0 || f.Denominator[0] != 0)
                 .Where(f => f.Numerator.Any(d => f.Denominator.Contains(d)))
@@ -38,10 +38,10 @@ namespace Ckknight.ProjectEuler.Problems
                     .SelectMany((n, i) => f.Denominator
                         .Select((d, j) => n == d ? new
                         {
-                            OldNumerator = (int)MathUtilities.FromDigitList(f.Numerator),
-                            OldDenominator = (int)MathUtilities.FromDigitList(f.Denominator),
-                            NewNumerator = (int)MathUtilities.FromDigitList(f.Numerator.Take(i).Concat(f.Numerator.Skip(i + 1))),
-                            NewDenominator = (int)MathUtilities.FromDigitList(f.Denominator.Take(j).Concat(f.Denominator.Skip(j + 1))),
+                            OldNumerator = (int)MathUtilities.FromDigits(f.Numerator),
+                            OldDenominator = (int)MathUtilities.FromDigits(f.Denominator),
+                            NewNumerator = (int)MathUtilities.FromDigits(f.Numerator.Take(i).Concat(f.Numerator.Skip(i + 1))),
+                            NewDenominator = (int)MathUtilities.FromDigits(f.Denominator.Take(j).Concat(f.Denominator.Skip(j + 1))),
                         } : null)
                         .Where(x => x != null)))
                 .Where(x => x.NewDenominator != 0)

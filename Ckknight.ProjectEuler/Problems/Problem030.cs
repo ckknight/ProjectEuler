@@ -28,7 +28,7 @@ namespace Ckknight.ProjectEuler.Problems
                 .First(n => n * MathUtilities.Pow(9, Exponent) < MathUtilities.Pow(10, n) - 1);
 
             return new Range(2, maxDigits * MathUtilities.Pow(9, Exponent))
-                .Where(n => MathUtilities.ToDigitList(n)
+                .Where(n => MathUtilities.ToDigits(n)
                     .Select(d => MathUtilities.Pow(d, Exponent))
                     .Sum() == n)
                 .Sum();

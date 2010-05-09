@@ -20,10 +20,10 @@ namespace Ckknight.ProjectEuler.Problems
         {
             return new PrimeGenerator()
                 .TakeWhile(n => n < 1000000)
-                .Select(n => MathUtilities.ToDigitList(n))
-                .Where(n => new Range(1, n.Count)
+                .Select(n => MathUtilities.ToDigits(n))
+                .Where(n => new Range(1, n.Length)
                     .All(i => PrimeGenerator.IsPrime(
-                        MathUtilities.FromDigitList(
+                        MathUtilities.FromDigits(
                             n.Skip(i).Concat(n.Take(i))))))
                 .Count();
         }

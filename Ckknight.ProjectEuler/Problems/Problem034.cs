@@ -21,7 +21,7 @@ namespace Ckknight.ProjectEuler.Problems
                 .First(i => MathUtilities.Pow(10, i) >= i * Factorial(9));
 
             return new Range(10, maxDigits * Factorial(9))
-                .Where(n => MathUtilities.ToDigitList(n).Sum(d => Factorial(d)) == n)
+                .Where(n => MathUtilities.ToDigits(n).Sum(d => Factorial(d)) == n)
                 .Sum();
         }
 
