@@ -106,14 +106,14 @@ namespace Ckknight.ProjectEuler.Collections
             }
             else if (amount == 1)
             {
-                return _tail;
+                return _tail ?? Empty;
             }
             else
             {
                 ImmutableSequence<T> current = this;
                 while (amount > 0 && current._hasValue)
                 {
-                    current = current._tail;
+                    current = current._tail ?? Empty;
                     amount--;
                 }
                 return current;
@@ -128,7 +128,7 @@ namespace Ckknight.ProjectEuler.Collections
             while (current._hasValue)
             {
                 yield return current._head;
-                current = current._tail;
+                current = current._tail ?? Empty;
             }
         }
 

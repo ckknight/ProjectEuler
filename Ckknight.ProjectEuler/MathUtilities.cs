@@ -73,6 +73,25 @@ namespace Ckknight.ProjectEuler
             return list;
         }
 
+        public static long FromDigitList(IEnumerable<int> digits)
+        {
+            if (digits == null)
+            {
+                throw new ArgumentNullException("digits");
+            }
+
+            long total = 0;
+            long power = 1;
+
+            foreach (int digit in digits)
+            {
+                total += digit * power;
+                power *= 10;
+            }
+
+            return total;
+        }
+
         public static int Pow(int number, int exponent)
         {
             if (number == 0)
