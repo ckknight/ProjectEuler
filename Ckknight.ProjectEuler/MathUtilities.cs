@@ -210,5 +210,39 @@ namespace Ckknight.ProjectEuler
 
             return result;
         }
+
+        public static bool IsPerfectSquare(long number)
+        {
+            if ((number < 0) || ((number & 2) != 0) || ((number & 7) == 5) || ((number & 11) == 8))
+            {
+                return false;
+            }
+            else if (number == 0)
+            {
+                return true;
+            }
+            else
+            {
+                long root = (long)(Math.Sqrt(number));
+                return root * root == number;
+            }
+        }
+
+        public static bool IsPerfectSquare(int number)
+        {
+            if ((number < 0) || ((number & 2) != 0) || ((number & 7) == 5) || ((number & 11) == 8))
+            {
+                return false;
+            }
+            else if (number == 0)
+            {
+                return true;
+            }
+            else
+            {
+                int root = (int)(Math.Sqrt(number));
+                return root * root == number;
+            }
+        }
     }
 }
