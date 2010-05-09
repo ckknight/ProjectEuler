@@ -209,5 +209,62 @@ namespace Ckknight.ProjectEuler.Collections
 
             return new PermutationGenerator<T>(sequence);
         }
+
+        public static IEnumerable<T> ElementsAt<T>(this IEnumerable<T> sequence, params int[] indexes)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+            else if (indexes == null)
+            {
+                throw new ArgumentNullException("indexes");
+            }
+
+            if (indexes.Length == 0)
+            {
+                return Enumerable.Empty<T>();
+            }
+
+            foreach (int index in indexes)
+            {
+                if (index < 0)
+                {
+                    throw new ArgumentException("All items must be at least 0", "indexes");
+                }
+            }
+
+            var indexSet = new HashSet<int>(indexes);
+            var dict = new Dictionary<int, T>();
+            int maximum = indexSet.Max();
+
+            int count = 0;
+            foreach (T item in sequence)
+            {
+                if (indexSet.Contains(count))
+                {
+                    dict[count] = item;
+                }
+
+                count++;
+                if (count > maximum)
+                {
+                    break;
+                }
+            }
+
+            T[] results = new T[indexes.Length];
+            for (int i = 0; i < indexes.Length; i++)
+            {
+                int index = indexes[i];
+                if (!dict.ContainsKey(index))
+                {
+                    throw new ArgumentOutOfRangeException("Index greater than the number of elements in the sequence", "indexes");
+                }
+
+                results[i] = dict[index];
+            }
+            return results;
+        }
     }
 }
