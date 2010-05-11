@@ -266,5 +266,79 @@ namespace Ckknight.ProjectEuler.Collections
             }
             return results;
         }
+
+        public static IEnumerable<T> OrderedIntersect<T>(this IEnumerable<T> sequence, IEnumerable<T> other) where T : IComparable<T>
+        {
+            return OrderedIntersect(sequence, other, null);
+        }
+
+        public static IEnumerable<T> OrderedIntersect<T>(this IEnumerable<T> sequence, IEnumerable<T> other, IComparer<T> comparer) where T : IComparable<T>
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+            else if (other == null)
+            {
+                throw new ArgumentNullException("other");
+            }
+            if (comparer == null)
+            {
+                comparer = Comparer<T>.Default;
+            }
+
+            using (IEnumerator<T> first = sequence.GetEnumerator())
+            {
+                using (IEnumerator<T> second = other.GetEnumerator())
+                {
+                    if (!first.MoveNext())
+                    {
+                        yield break;
+                    }
+                    else if (!second.MoveNext())
+                    {
+                        yield break;
+                    }
+
+                    T firstValue = first.Current;
+                    T secondValue = second.Current;
+
+                    while (true)
+                    {
+                        int comparison = comparer.Compare(firstValue, secondValue);
+                        if (comparison < 0)
+                        {
+                            if (!first.MoveNext())
+                            {
+                                yield break;
+                            }
+                            firstValue = first.Current;
+                        }
+                        else if (comparison > 0)
+                        {
+                            if (!second.MoveNext())
+                            {
+                                yield break;
+                            }
+                            secondValue = second.Current;
+                        }
+                        else if (comparison == 0)
+                        {
+                            yield return first.Current;
+                            if (!first.MoveNext())
+                            {
+                                yield break;
+                            }
+                            if (!second.MoveNext())
+                            {
+                                yield break;
+                            }
+                            firstValue = first.Current;
+                            secondValue = second.Current;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
