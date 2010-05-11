@@ -12,7 +12,7 @@ namespace Ckknight.ProjectEuler
     {
         static void Main(string[] args)
         {
-            RunProblem(45);
+            RunProblem(46);
         }
 
         public static void RunProblem(int number)
