@@ -368,5 +368,92 @@ namespace Ckknight.ProjectEuler.Collections
                 }
             }
         }
+
+        public static IEnumerable<TResult> SelectWithAggregate<T, TResult>(this IEnumerable<T> sequence, TResult seed, Func<TResult, T, TResult> generator)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+            else if (generator == null)
+            {
+                throw new ArgumentNullException("generator");
+            }
+
+            foreach (T item in sequence)
+            {
+                seed = generator(seed, item);
+                yield return seed;
+            }
+        }
+
+        public static IEnumerable<TElement> Skip<TElement>(this TElement[] array, int amount)
+        {
+            if (array == null)
+            {
+                throw new ArgumentNullException("array");
+            }
+            else if (amount < 0)
+            {
+                throw new ArgumentOutOfRangeException("amount", amount, "Must be at least 0");
+            }
+            else if (amount == 0)
+            {
+                return array;
+            }
+
+            int length = array.Length;
+            if (amount >= array.Length)
+            {
+                return Enumerable.Empty<TElement>();
+            }
+
+            return SkipHelper(array, amount, length);
+        }
+
+        private static IEnumerable<TElement> SkipHelper<TElement>(TElement[] array, int amount, int length)
+        {
+            for (int i = amount; i < length; i++)
+            {
+                yield return array[i];
+            }
+        }
+
+        public static IEnumerable<TElement> Take<TElement>(this TElement[] array, int amount)
+        {
+            if (array == null)
+            {
+                throw new ArgumentNullException("array");
+            }
+            else if (amount < 0)
+            {
+                throw new ArgumentOutOfRangeException("amount", amount, "Must be at least 0");
+            }
+            else if (amount == 0)
+            {
+                return Enumerable.Empty<TElement>();
+            }
+
+            int length = array.Length;
+            if (length == 0)
+            {
+                return array;
+            }
+
+            if (amount < length)
+            {
+                length = amount;
+            }
+
+            return TakeHelper(array, length);
+        }
+
+        private static IEnumerable<TElement> TakeHelper<TElement>(TElement[] array, int length)
+        {
+            for (int i = 0; i < length; i++)
+            {
+                yield return array[i];
+            }
+        }
     }
 }
