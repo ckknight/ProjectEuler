@@ -340,5 +340,33 @@ namespace Ckknight.ProjectEuler.Collections
                 }
             }
         }
+
+        public static IEnumerable<TResult> ToMemorableEnumerable<TElement, TResult>(this IEnumerable<TElement> sequence, int count, Func<TElement[], TResult> resultCreator)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+            else if (count < 0)
+            {
+                throw new ArgumentOutOfRangeException("count", count, "Must be at least 0");
+            }
+            else if (resultCreator == null)
+            {
+                throw new ArgumentNullException("resultCreator");
+            }
+
+            count++;
+            var queue = new Queue<TElement>(count);
+            foreach (TElement item in sequence)
+            {
+                queue.Enqueue(item);
+                yield return resultCreator(queue.ToArray());
+                if (queue.Count == count)
+                {
+                    queue.Dequeue();
+                }
+            }
+        }
     }
 }
