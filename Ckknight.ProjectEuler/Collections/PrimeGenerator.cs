@@ -44,7 +44,7 @@ namespace Ckknight.ProjectEuler.Collections
             }
 
             long sqrt = (long)Math.Sqrt(value);
-            foreach (long i in new PrimeGenerator().TakeWhile(x => x < sqrt))
+            foreach (long i in new PrimeGenerator().TakeWhile(x => x <= sqrt))
             {
                 if ((value % i) == 0L)
                 {
