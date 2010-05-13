@@ -211,6 +211,47 @@ namespace Ckknight.ProjectEuler
             return result;
         }
 
+        public static long ModPow(long number, long exponent, long modulus)
+        {
+            if (modulus == 1L)
+            {
+                return 0L;
+            }
+            else if (modulus < 1L)
+            {
+                throw new ArgumentOutOfRangeException("modulus", modulus, "Must be at least 1");
+            }
+            number %= modulus;
+            if (number == 0L)
+            {
+                return 0L;
+            }
+            else if (exponent == 0L)
+            {
+                return 1L;
+            }
+            else if (exponent == 1L)
+            {
+                return number;
+            }
+            else if (exponent == 2L)
+            {
+                return (number * number) % modulus;
+            }
+            else if (exponent < 0L)
+            {
+                throw new ArgumentOutOfRangeException("exponent", exponent, "Must be at least 0");
+            }
+
+            long result = 1L;
+            for (long i = 0; i < exponent; i++)
+            {
+                result = (result * number) % modulus;
+            }
+
+            return result;
+        }
+
         public static bool IsPerfectSquare(long number)
         {
             if ((number < 0) || ((number & 2) != 0) || ((number & 7) == 5) || ((number & 11) == 8))
