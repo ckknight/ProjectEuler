@@ -110,6 +110,7 @@
     <Compile Include="Problems\Problem050.cs" />
     <Compile Include="Problems\Problem051.cs" />
     <Compile Include="Problems\Problem052.cs" />
+    <Compile Include="Problems\Problem053.cs" />
     <Compile Include="Problems\ProblemAttribute.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
