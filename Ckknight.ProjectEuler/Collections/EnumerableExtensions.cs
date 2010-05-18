@@ -543,5 +543,57 @@ namespace Ckknight.ProjectEuler.Collections
                 yield return new Grouping<TKey, TElement>(currentKey, currentElements);
             }
         }
+
+        public static int SequenceCompare<T>(this IEnumerable<T> sequence, IEnumerable<T> other)
+        {
+            return SequenceCompare<T>(sequence, other, null);
+        }
+
+        public static int SequenceCompare<T>(this IEnumerable<T> sequence, IEnumerable<T> other, IComparer<T> comparer)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+            else if (other == null)
+            {
+                throw new ArgumentNullException("other");
+            }
+            if (comparer == null)
+            {
+                comparer = Comparer<T>.Default;
+            }
+
+            using (IEnumerator<T> alpha = sequence.GetEnumerator())
+            {
+                using (IEnumerator<T> bravo = other.GetEnumerator())
+                {
+                    while (true)
+                    {
+                        if (!alpha.MoveNext())
+                        {
+                            if (bravo.MoveNext())
+                            {
+                                return -1;
+                            }
+                            else
+                            {
+                                return 0;
+                            }
+                        }
+                        else if (!bravo.MoveNext())
+                        {
+                            return 1;
+                        }
+
+                        int cmp = comparer.Compare(alpha.Current, bravo.Current);
+                        if (cmp != 0)
+                        {
+                            return cmp;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
