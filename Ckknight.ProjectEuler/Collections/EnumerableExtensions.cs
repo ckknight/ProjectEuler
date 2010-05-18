@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Collections;
 
 namespace Ckknight.ProjectEuler.Collections
 {
@@ -453,6 +454,93 @@ namespace Ckknight.ProjectEuler.Collections
             for (int i = 0; i < length; i++)
             {
                 yield return array[i];
+            }
+        }
+
+        public static IEnumerable<T> Replace<T>(this IEnumerable<T> sequence, T oldValue, T newValue)
+        {
+            return Replace(sequence, oldValue, newValue, null);
+        }
+
+        public static IEnumerable<T> Replace<T>(this IEnumerable<T> sequence, T oldValue, T newValue, IEqualityComparer<T> comparer)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+
+            if (comparer == null)
+            {
+                comparer = EqualityComparer<T>.Default;
+            }
+
+            foreach (T item in sequence)
+            {
+                if (comparer.Equals(item, oldValue))
+                {
+                    yield return newValue;
+                }
+                else
+                {
+                    yield return item;
+                }
+            }
+        }
+
+        public static IGrouping<TKey, TElement> ToGrouping<TKey, TElement>(this IEnumerable<TElement> sequence, TKey key)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+
+            return new Grouping<TKey, TElement>(key, sequence);
+        }
+
+        public static IEnumerable<IGrouping<TKey, TElement>> OrderedGroupBy<TKey, TElement>(this IEnumerable<TElement> sequence, Func<TElement, TKey> keySelector)
+        {
+            return OrderedGroupBy<TKey, TElement>(sequence, keySelector, null);
+        }
+        public static IEnumerable<IGrouping<TKey, TElement>> OrderedGroupBy<TKey, TElement>(this IEnumerable<TElement> sequence, Func<TElement, TKey> keySelector, IEqualityComparer<TKey> comparer)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+            else if (keySelector == null)
+            {
+                throw new ArgumentNullException("keySelector");
+            }
+            if (comparer == null)
+            {
+                comparer = EqualityComparer<TKey>.Default;
+            }
+
+            TKey currentKey = default(TKey);
+            List<TElement> currentElements = null;
+            foreach (TElement item in sequence)
+            {
+                if (currentElements == null)
+                {
+                    currentElements = new List<TElement>();
+                    currentElements.Add(item);
+                    currentKey = keySelector(item);
+                }
+                else
+                {
+                    TKey newKey = keySelector(item);
+                    if (!comparer.Equals(currentKey, newKey))
+                    {
+                        yield return new Grouping<TKey, TElement>(currentKey, currentElements);
+                        currentKey = newKey;
+                        currentElements = new List<TElement>();
+                    }
+                    currentElements.Add(item);
+                }
+            }
+            if (currentElements != null)
+            {
+                yield return new Grouping<TKey, TElement>(currentKey, currentElements);
             }
         }
     }
