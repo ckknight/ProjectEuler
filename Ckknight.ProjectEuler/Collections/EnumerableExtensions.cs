@@ -595,5 +595,15 @@ namespace Ckknight.ProjectEuler.Collections
                 }
             }
         }
+
+        public static MultiHashSet<T> ToMultiHashSet<T>(this IEnumerable<T> sequence)
+        {
+            return ToMultiHashSet<T>(sequence, null);
+        }
+
+        public static MultiHashSet<T> ToMultiHashSet<T>(this IEnumerable<T> sequence, IEqualityComparer<T> comparer)
+        {
+            return new MultiHashSet<T>(sequence, comparer);
+        }
     }
 }

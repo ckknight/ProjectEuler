@@ -50,7 +50,9 @@
     <Compile Include="Collections\FibonacciSequence.cs" />
     <Compile Include="Collections\Grouping.cs" />
     <Compile Include="Collections\ImmutableSequence.cs" />
+    <Compile Include="Collections\IMultiSet.cs" />
     <Compile Include="Collections\Int32Set.cs" />
+    <Compile Include="Collections\MultiHashSet.cs" />
     <Compile Include="Collections\PermutationGenerator.cs" />
     <Compile Include="Collections\PrimeFactorGenerator.cs" />
     <Compile Include="Collections\PrimeGenerator.cs" />
@@ -117,6 +119,7 @@
     <Compile Include="Problems\Problem056.cs" />
     <Compile Include="Problems\Problem057.cs" />
     <Compile Include="Problems\Problem058.cs" />
+    <Compile Include="Problems\Problem059.cs" />
     <Compile Include="Problems\ProblemAttribute.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
