@@ -1,5 +1,0 @@
-c:\users\cknight\documents\visual studio 2010\Projects\Ckknight.ProjectEuler\Ckknight.ProjectEuler\bin\Debug\Ckknight.ProjectEuler.exe
-c:\users\cknight\documents\visual studio 2010\Projects\Ckknight.ProjectEuler\Ckknight.ProjectEuler\bin\Debug\Ckknight.ProjectEuler.pdb
-c:\users\cknight\documents\visual studio 2010\Projects\Ckknight.ProjectEuler\Ckknight.ProjectEuler\obj\x86\Debug\ResolveAssemblyReference.cache
-c:\users\cknight\documents\visual studio 2010\Projects\Ckknight.ProjectEuler\Ckknight.ProjectEuler\obj\x86\Debug\Ckknight.ProjectEuler.exe
-c:\users\cknight\documents\visual studio 2010\Projects\Ckknight.ProjectEuler\Ckknight.ProjectEuler\obj\x86\Debug\Ckknight.ProjectEuler.pdb
