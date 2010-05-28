@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections;
+using System.Numerics;
 
 namespace Ckknight.ProjectEuler.Collections
 {
@@ -139,6 +140,16 @@ namespace Ckknight.ProjectEuler.Collections
             return new HashSet<T>(sequence, comparer);
         }
 
+        public static ImmutableSequence<T> ToImmutableSequence<T>(this IEnumerable<T> sequence)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+
+            return new ImmutableSequence<T>(sequence);
+        }
+
         /// <summary>
         /// Create a new Int32Set based on the elements of the provided <paramref name="sequence"/>.
         /// </summary>
@@ -189,6 +200,36 @@ namespace Ckknight.ProjectEuler.Collections
 
             long value = 1;
             foreach (int item in sequence)
+            {
+                value *= item;
+            }
+            return value;
+        }
+
+        public static BigInteger Sum(this IEnumerable<BigInteger> sequence)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+
+            BigInteger value = 0;
+            foreach (BigInteger item in sequence)
+            {
+                value += item;
+            }
+            return value;
+        }
+
+        public static BigInteger Product(this IEnumerable<BigInteger> sequence)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+
+            BigInteger value = 1;
+            foreach (BigInteger item in sequence)
             {
                 value *= item;
             }
@@ -632,6 +673,29 @@ namespace Ckknight.ProjectEuler.Collections
                 yield return member;
             }
             yield return item;
+        }
+
+        public static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T> sequence) where T : class
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+
+            return sequence
+                .Where(x => x != null);
+        }
+
+        public static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T?> sequence) where T : struct
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+
+            return sequence
+                .Where(x => x.HasValue)
+                .Select(x => x.Value);
         }
     }
 }

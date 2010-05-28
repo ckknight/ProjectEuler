@@ -30,7 +30,7 @@ namespace Ckknight.ProjectEuler.Collections
     /// This functions in a linked-list style fashion or similar to LISP's cons system.
     /// </summary>
     /// <typeparam name="T">The element type of the sequence.</typeparam>
-    public class ImmutableSequence<T> : IEnumerable<T>
+    public class ImmutableSequence<T> : IEnumerable<T>, IEquatable<ImmutableSequence<T>>
     {
         public ImmutableSequence(params T[] args)
             : this((IEnumerable<T>)args) { }
@@ -160,5 +160,141 @@ namespace Ckknight.ProjectEuler.Collections
         }
 
         #endregion
+
+        public bool Equals(ImmutableSequence<T> other)
+        {
+            if ((object)other == null)
+            {
+                return false;
+            }
+            else if (object.ReferenceEquals(this, other))
+            {
+                return false;
+            }
+
+            ImmutableSequence<T> alpha = this;
+            ImmutableSequence<T> bravo = other;
+            while (true)
+            {
+                if (!alpha._hasValue)
+                {
+                    if (bravo._hasValue)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                else if (!bravo._hasValue)
+                {
+                    return false;
+                }
+                else if (!object.Equals(alpha._head, bravo._head))
+                {
+                    return false;
+                }
+                else
+                {
+                    alpha = alpha._tail ?? Empty;
+                    bravo = bravo._tail ?? Empty;
+                }
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+            return Equals(obj as ImmutableSequence<T>);
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 0;
+
+            ImmutableSequence<T> current = this;
+            while (current._hasValue)
+            {
+                hashCode ^= current._head.GetHashCode();
+                current = current._tail ?? Empty;
+            }
+
+            return hashCode;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append('{');
+
+            bool first = true;
+            foreach (T item in this)
+            {
+                if (first)
+                {
+                    sb.Append(' ');
+                    first = false;
+                }
+                else
+                {
+                    sb.Append(", ");
+                }
+                sb.Append(item);
+            }
+
+            sb.Append(" }");
+
+            return sb.ToString();
+        }
+
+        public static IEqualityComparer<ImmutableSequence<T>> Comparer
+        {
+            get
+            {
+                return ComparerHelper.Instance;
+            }
+        }
+
+        private class ComparerHelper : IEqualityComparer<ImmutableSequence<T>>
+        {
+            private ComparerHelper() { }
+            private static readonly ComparerHelper _instance = new ComparerHelper();
+            public static ComparerHelper Instance
+            {
+                get
+                {
+                    return _instance;
+                }
+            }
+
+            public bool Equals(ImmutableSequence<T> x, ImmutableSequence<T> y)
+            {
+                if (x == null)
+                {
+                    return y == null;
+                }
+                else
+                {
+                    return x.Equals(y);
+                }
+            }
+
+            public int GetHashCode(ImmutableSequence<T> obj)
+            {
+                if (obj == null)
+                {
+                    return int.MinValue;
+                }
+                else
+                {
+                    return obj.GetHashCode();
+                }
+            }
+        }
     }
 }

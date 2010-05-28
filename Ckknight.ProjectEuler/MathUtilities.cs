@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections;
+using System.Numerics;
 
 namespace Ckknight.ProjectEuler
 {
@@ -59,6 +60,26 @@ namespace Ckknight.ProjectEuler
             return array;
         }
 
+        public static int[] ToDigits(BigInteger value)
+        {
+            if (value.Sign <= 0)
+            {
+                throw new ArgumentOutOfRangeException("value", value, "Must be at least 1");
+            }
+
+            int max = (int)Math.Floor(BigInteger.Log10(value)) + 1;
+            var array = new int[max];
+
+            for (int i = 0; i < max; i++)
+            {
+                BigInteger remainder;
+                value = BigInteger.DivRem(value, 10, out remainder);
+                array[i] = (int)remainder;
+            }
+
+            return array;
+        }
+
         public static long FromDigits(IEnumerable<int> digits)
         {
             if (digits == null)
@@ -68,6 +89,25 @@ namespace Ckknight.ProjectEuler
 
             long total = 0;
             long power = 1;
+
+            foreach (int digit in digits)
+            {
+                total += digit * power;
+                power *= 10;
+            }
+
+            return total;
+        }
+
+        public static BigInteger FromDigitsToBigInteger(IEnumerable<int> digits)
+        {
+            if (digits == null)
+            {
+                throw new ArgumentNullException("digits");
+            }
+
+            BigInteger total = 0;
+            BigInteger power = 1;
 
             foreach (int digit in digits)
             {

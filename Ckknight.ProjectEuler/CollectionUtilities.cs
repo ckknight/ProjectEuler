@@ -36,5 +36,50 @@ namespace Ckknight.ProjectEuler
         {
             return new HashSet<T>(args);
         }
+
+        public static IEqualityComparer<IEnumerable<T>> GetSequenceEqualityComparer<T>()
+        {
+            return SequenceEqualityComparerHelper<T>.Instance;
+        }
+
+        private class SequenceEqualityComparerHelper<T> : IEqualityComparer<IEnumerable<T>>
+        {
+            private SequenceEqualityComparerHelper() { }
+
+            private static readonly SequenceEqualityComparerHelper<T> _instance = new SequenceEqualityComparerHelper<T>();
+            public static SequenceEqualityComparerHelper<T> Instance
+            {
+                get
+                {
+                    return _instance;
+                }
+            }
+
+            public bool Equals(IEnumerable<T> x, IEnumerable<T> y)
+            {
+                if (x == null)
+                {
+                    return y == null;
+                }
+                else if (y == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return x.SequenceEqual(y);
+                }
+            }
+
+            public int GetHashCode(IEnumerable<T> obj)
+            {
+                int hashCode = 0;
+                foreach (T item in obj)
+                {
+                    hashCode ^= item.GetHashCode();
+                }
+                return hashCode;
+            }
+        }
     }
 }
