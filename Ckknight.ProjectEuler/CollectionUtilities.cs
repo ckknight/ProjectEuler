@@ -26,5 +26,15 @@ namespace Ckknight.ProjectEuler
         {
             return new HashSet<T>();
         }
+
+        public static List<T> NewList<T>(params T[] args)
+        {
+            return new List<T>(args);
+        }
+
+        public static HashSet<T> NewHashSet<T>(params T[] args)
+        {
+            return new HashSet<T>(args);
+        }
     }
 }

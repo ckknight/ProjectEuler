@@ -6,6 +6,24 @@ using System.Collections;
 
 namespace Ckknight.ProjectEuler.Collections
 {
+    public static class ImmutableSequence
+    {
+        public static ImmutableSequence<T> Create<T>(params T[] args)
+        {
+            return new ImmutableSequence<T>(args);
+        }
+
+        public static ImmutableSequence<T> Create<T>(IEnumerable<T> args)
+        {
+            return new ImmutableSequence<T>(args);
+        }
+
+        public static ImmutableSequence<T> Create<T>(T head, ImmutableSequence<T> tail)
+        {
+            return new ImmutableSequence<T>(head, tail);
+        }
+    }
+
     /// <summary>
     /// Represents a sequence of elements where it is very easy to get the first element or skip elements.
     /// 

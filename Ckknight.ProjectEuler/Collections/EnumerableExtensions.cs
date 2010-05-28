@@ -605,5 +605,33 @@ namespace Ckknight.ProjectEuler.Collections
         {
             return new MultiHashSet<T>(sequence, comparer);
         }
+
+        public static IEnumerable<T> PrependItem<T>(this IEnumerable<T> sequence, T item)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+
+            yield return item;
+            foreach (T member in sequence)
+            {
+                yield return member;
+            }
+        }
+
+        public static IEnumerable<T> AppendItem<T>(this IEnumerable<T> sequence, T item)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+
+            foreach (T member in sequence)
+            {
+                yield return member;
+            }
+            yield return item;
+        }
     }
 }
