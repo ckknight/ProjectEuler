@@ -46,7 +46,7 @@ namespace Ckknight.ProjectEuler.Collections
             }
         }
 
-        private ImmutableSequence(T head, ImmutableSequence<T> tail)
+        public ImmutableSequence(T head, ImmutableSequence<T> tail)
         {
             if (tail == null)
             {

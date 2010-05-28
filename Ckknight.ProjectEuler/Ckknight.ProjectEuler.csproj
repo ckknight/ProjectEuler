@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\BooleanArray.cs" />
+    <Compile Include="Collections\BooleanMatrix.cs" />
     <Compile Include="Collections\CombinationGenerator.cs" />
     <Compile Include="Collections\EnumerableExtensions.cs" />
     <Compile Include="Collections\FactorGenerator.cs" />
@@ -120,6 +122,7 @@
     <Compile Include="Problems\Problem057.cs" />
     <Compile Include="Problems\Problem058.cs" />
     <Compile Include="Problems\Problem059.cs" />
+    <Compile Include="Problems\Problem060.cs" />
     <Compile Include="Problems\ProblemAttribute.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

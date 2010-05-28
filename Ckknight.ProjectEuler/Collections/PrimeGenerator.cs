@@ -69,6 +69,14 @@ namespace Ckknight.ProjectEuler.Collections
             return _foundPrimes[index];
         }
 
+        public static void CalculateUpTo(int maximum)
+        {
+            while (_calculatedPrimesUpTo < maximum)
+            {
+                GetNextSection();
+            }
+        }
+
         private static readonly int[] _numbersToCheck = new Range(30).ToArray();
 
         private static IEnumerable<long> GetNextSection()
