@@ -36,16 +36,15 @@ namespace Ckknight.ProjectEuler.Problems
                     n = x.n,
                     t = x.n - (x.p + x.q) + 1
                 })
+                .Concat(PrimeGenerator.Instance.AsParallel((long)Math.Sqrt(10000000))
+                    .Select(p => new
+                    {
+                        n = p*p,
+                        t = p*p - p,
+                    }))
                 .Where(x => MathUtilities.ToDigits(x.t).IsPermutation(MathUtilities.ToDigits(x.n)))
                 .WithMin(x => (double)x.n / (double)x.t)
                 .n;
-        }
-
-        public long Phi(long n)
-        {
-            return new PrimeFactorGenerator(n)
-                .Distinct()
-                .Aggregate(n, (x, p) => x * (p - 1) / p);
         }
     }
 }
