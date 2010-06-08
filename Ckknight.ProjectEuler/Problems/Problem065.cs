@@ -54,19 +54,8 @@ namespace Ckknight.ProjectEuler.Problems
         public override object CalculateResult()
         {
             var e = new ContinuedFraction(2,
-                new Range(int.MaxValue)
-                    .Select(n =>
-                    {
-                        switch (n % 3)
-                        {
-                            case 0:
-                            case 2:
-                                return 1L;
-                            default:
-                                return ((n / 3) + 1) * 2L;
-                        }
-                    }));
-
+                new Range(2, int.MaxValue, 2)
+                    .SelectMany(n => new long[] { 1, n, 1 }));
 
             return e
                 .GetBigFractions()

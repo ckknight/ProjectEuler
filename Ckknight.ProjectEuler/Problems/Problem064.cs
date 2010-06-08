@@ -99,7 +99,6 @@ namespace Ckknight.ProjectEuler.Problems
         public override object CalculateResult()
         {
             return new Range(1, 10000, true)
-                //.Where(n => !MathUtilities.IsPerfectSquare(n))
                 .Select(n => ContinuedFraction.Sqrt(n))
                 .Where(f => (f.PeriodicQuotients.Count() % 2) == 1)
                 .Count();
