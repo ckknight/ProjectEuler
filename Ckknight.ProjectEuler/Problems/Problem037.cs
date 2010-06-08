@@ -20,10 +20,10 @@ namespace Ckknight.ProjectEuler.Problems
     {
         public override object CalculateResult()
         {
-            return new PrimeGenerator()
+            return PrimeGenerator.Instance
                 .SkipWhile(x => x < 10)
                 .Where(x => GetTruncations(x)
-                    .All(p => PrimeGenerator.IsPrime(p)))
+                    .All(p => PrimeGenerator.Instance.IsPrime(p)))
                 .Take(11)
                 .Sum();
         }

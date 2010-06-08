@@ -25,7 +25,7 @@ namespace Ckknight.ProjectEuler.Problems
         {
             int maximum = 1000000;
 
-            var primes = new PrimeGenerator()
+            var primes = PrimeGenerator.Instance
                 .TakeWhile(p => p < maximum)
                 .ToArray();
 
@@ -34,7 +34,7 @@ namespace Ckknight.ProjectEuler.Problems
                     .Skip(i)
                     .SelectWithAggregate(new { Count = 0, Sum = 0L }, (x, v) => new { Count = x.Count + 1, Sum = x.Sum + v })
                     .TakeWhile(x => x.Sum < maximum))
-                .Where(x => PrimeGenerator.IsPrime(x.Sum))
+                .Where(x => PrimeGenerator.Instance.IsPrime(x.Sum))
                 .Aggregate((a, b) => a.Count > b.Count ? a : b)
                 .Sum;
         }

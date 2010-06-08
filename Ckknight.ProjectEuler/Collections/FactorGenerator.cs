@@ -31,16 +31,13 @@ namespace Ckknight.ProjectEuler.Collections
         {
             long[] primeFactors = new PrimeFactorGenerator(_number).ToArray();
 
-            HashSet<long> divisors = new HashSet<long> { 1L };
-            int max = primeFactors.Length;
-            if (_includeNumber)
-            {
-                max++;
-            }
-            for (int i = 1; i < max; i++)
-            {
-                divisors.UnionWith(primeFactors.GetCombinations(i).Select(x => x.Product()));
-            }
+            var divisors = new Range(primeFactors.Length)
+                .Aggregate(new HashSet<long> { 1L }, (x, i) =>
+                {
+                    long primeFactor = primeFactors[i];
+                    x.UnionWith(x.Select(v => v * primeFactor).ToArray());
+                    return x;
+                });
             return divisors.GetEnumerator();
         }
 

@@ -14,7 +14,7 @@ namespace Ckknight.ProjectEuler.Problems
     {
         public override object CalculateResult()
         {
-            return PrimeGenerator.GetPrimeAtIndex(10001 - 1);
+            return PrimeGenerator.Instance.GetPrimeAtIndex(10001 - 1);
         }
     }
 }

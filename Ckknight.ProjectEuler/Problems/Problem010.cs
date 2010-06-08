@@ -14,7 +14,7 @@ namespace Ckknight.ProjectEuler.Problems
     {
         public override object CalculateResult()
         {
-            return new PrimeGenerator()
+            return PrimeGenerator.Instance
                 .TakeWhile(i => i < 2000000)
                 .Sum();
         }

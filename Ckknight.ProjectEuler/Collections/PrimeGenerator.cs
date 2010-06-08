@@ -1,57 +1,141 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Collections;
+using System.Collections.Concurrent;
 
 namespace Ckknight.ProjectEuler.Collections
 {
-    /// <summary>
-    /// Represents an enumerable which generates primes.
-    /// </summary>
-    public sealed class PrimeGenerator : IEnumerable<long>
+    public class PrimeGenerator : IEnumerable<long>, IEnumerable
     {
-        private static readonly List<long> _foundPrimes = new List<long>
+        private PrimeGenerator()
         {
-            2,
-            3,
-            5,
-            7,
-            11,
-            13,
-            17,
-            19,
-            23,
-            29,
-        };
-        private static readonly HashSet<long> _primeSet = new HashSet<long>(_foundPrimes);
-        private static int _calculatedPrimesUpTo = 30;
+        }
 
-        /// <summary>
-        /// Return whether a given value is prime.
-        /// </summary>
-        /// <param name="value">The value to check for primeness.</param>
-        /// <returns>Whether the value is prime.</returns>
-        public static bool IsPrime(long value)
+        private static readonly PrimeGenerator _instance = new PrimeGenerator();
+        public static PrimeGenerator Instance
         {
-            if (_primeSet.Contains(value))
+            get
             {
-                return true;
+                return _instance;
             }
-            else if (value <= _calculatedPrimesUpTo)
-            {
-                return false;
-            }
+        }
 
-            long sqrt = (long)Math.Sqrt(value);
-            foreach (long i in new PrimeGenerator().TakeWhile(x => x <= sqrt))
+        private long _calculatedUpTo = 1;
+        private const int StandardPrimeCalculationChunkSize = 10000;
+        private const int MaxPrimeCalculationChunkSize = 8000000;
+        private readonly List<long> _primes = new List<long>();
+        private readonly HashSet<long> _primeSet = new HashSet<long>();
+
+        public void CalculateUpTo(long value)
+        {
+            if (value % StandardPrimeCalculationChunkSize != 0)
             {
-                if ((value % i) == 0L)
+                value += StandardPrimeCalculationChunkSize - (value % StandardPrimeCalculationChunkSize);
+            }
+            long start = _calculatedUpTo;
+
+            for (long i = _calculatedUpTo + 1; i < value; i += MaxPrimeCalculationChunkSize)
+            {
+                long max = i + MaxPrimeCalculationChunkSize;
+                if (max > value)
                 {
-                    return false;
+                    max = value;
+                }
+                CalculatePrimes(i, (int)(max - i));
+            }
+        }
+
+        public void CalculateNextChuck()
+        {
+            CalculatePrimes(_calculatedUpTo + 1, StandardPrimeCalculationChunkSize);
+        }
+
+        private readonly object _syncRoot = new object();
+        private void CalculatePrimes(long start, int length)
+        {
+            long max = start + length - 1;
+            if (max > _calculatedUpTo)
+            {
+                lock (_syncRoot)
+                {
+                    if (max > _calculatedUpTo)
+                    {
+                        BooleanArray data = new BooleanArray(length);
+
+                        long maxValue = (long)Math.Ceiling(Math.Sqrt(length + start));
+
+                        for (int i = 0; i < _primes.Count; i++)
+                        {
+                            long value = _primes[i];
+                            if (value > maxValue)
+                            {
+                                break;
+                            }
+
+                            long iterStart = (value * value) - start;
+                            if (iterStart < 0)
+                            {
+                                iterStart -= value * (iterStart / value);
+                                if (start % value != 0)
+                                {
+                                    iterStart += value;
+                                }
+                            }
+                            for (long j = iterStart; j < length; j += value)
+                            {
+                                data[(int)j] = true;
+                            }
+                        }
+
+                        for (int i = 0; i < length; i++)
+                        {
+                            if (!data[i])
+                            {
+                                long value = start + i;
+                                _primes.Add(value);
+                                _primeSet.Add(value);
+
+                                if (value <= maxValue)
+                                {
+                                    for (long j = ((value * value) - start); j < length; j += value)
+                                    {
+                                        data[(int)j] = true;
+                                    }
+                                }
+                            }
+                        }
+                        _calculatedUpTo = max;
+                    }
                 }
             }
-            return true;
+        }
+
+        public IEnumerator<long> GetEnumerator()
+        {
+            int index = 0;
+
+            while (true)
+            {
+                long count;
+                do
+                {
+                    count = _primes.Count;
+                    for (; index < count; index++)
+                    {
+                        long prime = _primes[index];
+                        yield return prime;
+                    }
+                } while (count < _primes.Count);
+
+                CalculateNextChuck();
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
 
         /// <summary>
@@ -59,100 +143,76 @@ namespace Ckknight.ProjectEuler.Collections
         /// </summary>
         /// <param name="index">The 0-based index to get the prime of.</param>
         /// <returns>The prime at the given index.</returns>
-        public static long GetPrimeAtIndex(int index)
+        public long GetPrimeAtIndex(int index)
         {
-            while (_foundPrimes.Count <= index)
+            if (_primes.Count > index)
             {
-                GetNextSection();
+                return _primes[index];
             }
 
-            return _foundPrimes[index];
-        }
-
-        public static void CalculateUpTo(int maximum)
-        {
-            while (_calculatedPrimesUpTo < maximum)
+            if (index > 6)
             {
-                GetNextSection();
-            }
-        }
-
-        private static readonly int[] _numbersToCheck = new Range(30).ToArray();
-
-        private static IEnumerable<long> GetNextSection()
-        {
-            List<long> tmp = new List<long>();
-
-            while (tmp.Count == 0)
-            {
-                for (int i = 0; i < _numbersToCheck.Length; i++)
-                {
-                    long value = _calculatedPrimesUpTo + _numbersToCheck[i];
-                    bool isComposite = false;
-                    long midpoint = (long)Math.Sqrt(value);
-                    foreach (long prime in _foundPrimes)
-                    {
-                        if (prime > midpoint)
-                        {
-                            break;
-                        }
-                        if ((value % prime) == 0)
-                        {
-                            isComposite = true;
-                            break;
-                        }
-                    }
-                    if (!isComposite)
-                    {
-                        _foundPrimes.Add(value);
-                        _primeSet.Add(value);
-                        tmp.Add(value);
-                    }
-                }
-                _calculatedPrimesUpTo += _numbersToCheck.Length;
+                double log = Math.Log(index);
+                long approximatePrimeValue = (long)Math.Floor(index * log + index * Math.Log(log));
+                CalculateUpTo(approximatePrimeValue);
             }
 
-            return tmp;
-        }
+            while (_primes.Count <= index)
+            {
+                CalculateNextChuck();
+            }
 
-        #region IEnumerable<long> Members
+            return _primes[index];
+        }
 
         /// <summary>
-        /// Return an enumerator which iterates over all primes.
+        /// Return whether a given value is prime.
         /// </summary>
-        /// <returns>The enumerator of primes.</returns>
-        public IEnumerator<long> GetEnumerator()
+        /// <param name="value">The value to check for primeness.</param>
+        /// <returns>Whether the value is prime.</returns>
+        public bool IsPrime(long value)
         {
-            // we need to yield all the primes we have previously found.
-            for (int i = 0; i < _foundPrimes.Count; i++)
+            if (_primeSet.Contains(value))
             {
-                long prime = _foundPrimes[i];
-                yield return prime;
+                return true;
+            }
+            else if (value <= _calculatedUpTo)
+            {
+                return false;
             }
 
-            // then we repeatedly get the primes of the next section and yield those values.
-            while (true)
+            long sqrt = (long)Math.Sqrt(value);
+            CalculateUpTo(sqrt);
+
+            int count = _primes.Count;
+            for (int i = 0; i < count; i++)
             {
-                foreach (long value in GetNextSection())
+                long prime = _primes[i];
+                if (prime > sqrt)
                 {
-                    yield return value;
+                    break;
+                }
+                else if ((value % prime) == 0L)
+                {
+                    return false;
                 }
             }
+            _primeSet.Add(value);
+            return true;
         }
 
-        #endregion
-
-        #region IEnumerable Members
-
-        /// <summary>
-        /// Return an enumerator which iterates over all primes.
-        /// </summary>
-        /// <returns>The enumerator of primes.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
+        public IEnumerable<long> GetUpTo(long amount)
         {
-            return this.GetEnumerator();
+            CalculateUpTo(amount);
+
+            return this
+                .TakeWhile(n => n <= amount);
         }
 
-        #endregion
+        public ParallelQuery<long> AsParallel(long upToAmount)
+        {
+            return Partitioner.Create<long>(GetUpTo(upToAmount))
+                .AsParallel();
+        }
     }
 }

@@ -34,7 +34,7 @@ namespace Ckknight.ProjectEuler.Problems
     {
         public override object CalculateResult()
         {
-            return new PrimeGenerator()
+            return PrimeGenerator.Instance
                 .TakeWhile(b => b < 1000)
                 .SelectMany(b => new Range(-999, 999, true)
                     .Select(a => new
@@ -42,7 +42,7 @@ namespace Ckknight.ProjectEuler.Problems
                         Product = a * b,
                         PrimeCount = new Range(0, int.MaxValue)
                             .Select(n => n*n + a*n + b)
-                            .TakeWhile(p => PrimeGenerator.IsPrime(p))
+                            .TakeWhile(p => PrimeGenerator.Instance.IsPrime(p))
                             .Count()
                     }))
                 .Aggregate((a, b) => a.PrimeCount > b.PrimeCount ? a : b)

@@ -138,6 +138,18 @@ namespace Ckknight.ProjectEuler.Collections
             }
         }
 
+        public IEnumerable<T> Reverse()
+        {
+            Stack<T> data = new Stack<T>();
+            ImmutableSequence<T> current = this;
+            while (current._hasValue)
+            {
+                data.Push(current._head);
+                current = current._tail ?? Empty;
+            }
+            return data;
+        }
+
         #region IEnumerable<T> Members
 
         public IEnumerator<T> GetEnumerator()

@@ -20,7 +20,7 @@ namespace Ckknight.ProjectEuler.Problems
                 .GetPermutations()
                 .Select(n => MathUtilities.FromDigits(n))
                 .OrderByDescending(n => n)
-                .First(n => PrimeGenerator.IsPrime(n));
+                .First(n => PrimeGenerator.Instance.IsPrime(n));
         }
     }
 }

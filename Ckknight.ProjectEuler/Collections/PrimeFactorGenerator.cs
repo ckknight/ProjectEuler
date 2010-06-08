@@ -42,7 +42,7 @@ namespace Ckknight.ProjectEuler.Collections
 
             long remainingNumber = _number;
             long midpoint = (long)(Math.Sqrt(_number));
-            foreach (long prime in new PrimeGenerator())
+            foreach (long prime in PrimeGenerator.Instance)
             {
                 if (prime > midpoint)
                 {

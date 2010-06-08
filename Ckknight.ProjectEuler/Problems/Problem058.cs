@@ -51,7 +51,7 @@ namespace Ckknight.ProjectEuler.Problems
                     {
                         SideLength = n,
                         Count = x.Count + values.Length,
-                        NumPrimes = x.NumPrimes + values.Where(p => PrimeGenerator.IsPrime(p)).Count()
+                        NumPrimes = x.NumPrimes + values.Where(p => PrimeGenerator.Instance.IsPrime(p)).Count()
                     };
                 })
                 .First(x => x.NumPrimes * 10 <= x.Count)

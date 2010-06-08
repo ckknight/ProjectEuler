@@ -31,7 +31,7 @@ namespace Ckknight.ProjectEuler.Problems
                     long sqrt = (long)Math.Sqrt(n / 2);
                     for (int i = 1; i <= sqrt; i++)
                     {
-                        if (PrimeGenerator.IsPrime(n - (2 * i * i)))
+                        if (PrimeGenerator.Instance.IsPrime(n - (2 * i * i)))
                         {
                             return false;
                         }
@@ -43,7 +43,7 @@ namespace Ckknight.ProjectEuler.Problems
         public IEnumerable<long> GetComposites()
         {
             long n = 1;
-            foreach (long prime in new PrimeGenerator())
+            foreach (long prime in PrimeGenerator.Instance)
             {
                 for (long i = n + 1; i < prime; i++)
                 {

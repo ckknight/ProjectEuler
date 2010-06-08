@@ -44,9 +44,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BigFraction.cs" />
+    <Compile Include="BigContinuedFraction.cs" />
+    <Compile Include="Collections\BetterCombinationGenerator.cs" />
     <Compile Include="Collections\BooleanArray.cs" />
     <Compile Include="Collections\BooleanMatrix.cs" />
+    <Compile Include="Collections\PrimeGenerator.cs" />
     <Compile Include="Collections\CombinationGenerator.cs" />
+    <Compile Include="Collections\DefaultDictionary.cs" />
+    <Compile Include="ContinuedFraction.cs" />
     <Compile Include="Collections\EnumerableExtensions.cs" />
     <Compile Include="Collections\FactorGenerator.cs" />
     <Compile Include="Collections\FibonacciSequence.cs" />
@@ -57,9 +63,9 @@
     <Compile Include="Collections\MultiHashSet.cs" />
     <Compile Include="Collections\PermutationGenerator.cs" />
     <Compile Include="Collections\PrimeFactorGenerator.cs" />
-    <Compile Include="Collections\PrimeGenerator.cs" />
     <Compile Include="Collections\Range.cs" />
     <Compile Include="CollectionUtilities.cs" />
+    <Compile Include="Fraction.cs" />
     <Compile Include="MathUtilities.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="Problems\BaseProblem.cs" />
@@ -126,6 +132,12 @@
     <Compile Include="Problems\Problem061.cs" />
     <Compile Include="Problems\Problem062.cs" />
     <Compile Include="Problems\Problem063.cs" />
+    <Compile Include="Problems\Problem064.cs" />
+    <Compile Include="Problems\Problem065.cs" />
+    <Compile Include="Problems\Problem066.cs" />
+    <Compile Include="Problems\Problem067.cs" />
+    <Compile Include="Problems\Problem068.cs" />
+    <Compile Include="Problems\Problem069.cs" />
     <Compile Include="Problems\ProblemAttribute.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

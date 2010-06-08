@@ -18,11 +18,11 @@ namespace Ckknight.ProjectEuler.Problems
     {
         public override object CalculateResult()
         {
-            return new PrimeGenerator()
+            return PrimeGenerator.Instance
                 .TakeWhile(n => n < 1000000)
                 .Select(n => MathUtilities.ToDigits(n))
                 .Where(n => new Range(1, n.Length)
-                    .All(i => PrimeGenerator.IsPrime(
+                    .All(i => PrimeGenerator.Instance.IsPrime(
                         MathUtilities.FromDigits(
                             n.Skip(i).Concat(n.Take(i))))))
                 .Count();

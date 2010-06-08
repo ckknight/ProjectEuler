@@ -27,6 +27,11 @@ namespace Ckknight.ProjectEuler
             return new HashSet<T>();
         }
 
+        public static Dictionary<TKey, TValue> EmptyDictionary<TKey, TValue>(Func<TKey> keyTypeCreator, Func<TValue> valueTypeCreator)
+        {
+            return new Dictionary<TKey, TValue>();
+        }
+
         public static List<T> NewList<T>(params T[] args)
         {
             return new List<T>(args);
@@ -79,6 +84,14 @@ namespace Ckknight.ProjectEuler
                     hashCode ^= item.GetHashCode();
                 }
                 return hashCode;
+            }
+        }
+
+        public static IEnumerable<T> Repeat<T>(T item)
+        {
+            while (true)
+            {
+                yield return item;
             }
         }
     }

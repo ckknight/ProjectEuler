@@ -697,5 +697,126 @@ namespace Ckknight.ProjectEuler.Collections
                 .Where(x => x.HasValue)
                 .Select(x => x.Value);
         }
+
+        public static IEnumerable<T> TakeWhileDistinct<T>(this IEnumerable<T> sequence)
+        {
+            return TakeWhileDistinct(sequence, false);
+        }
+
+        public static IEnumerable<T> TakeWhileDistinct<T>(this IEnumerable<T> sequence, bool includeLast)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+
+            HashSet<T> set = new HashSet<T>();
+            foreach (T item in sequence)
+            {
+                if (set.Contains(item))
+                {
+                    if (includeLast)
+                    {
+                        yield return item;
+                    }
+                    yield break;
+                }
+
+                yield return item;
+                set.Add(item);
+            }
+        }
+
+        public static TElement WithMax<TElement, TValue>(this IEnumerable<TElement> sequence, Func<TElement, TValue> selector)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+            else if (selector == null)
+            {
+                throw new ArgumentNullException("selector");
+            }
+
+            IComparer<TValue> comparer = Comparer<TValue>.Default;
+
+            return sequence
+                .Select(e => new
+                {
+                    Element = e,
+                    Value = selector(e)
+                })
+                .Aggregate((a, b) => comparer.Compare(a.Value, b.Value) >= 0 ? a : b)
+                .Element;
+        }
+
+        public static TElement WithMin<TElement, TValue>(this IEnumerable<TElement> sequence, Func<TElement, TValue> selector)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+            else if (selector == null)
+            {
+                throw new ArgumentNullException("selector");
+            }
+
+            IComparer<TValue> comparer = Comparer<TValue>.Default;
+
+            return sequence
+                .Select(e => new
+                {
+                    Element = e,
+                    Value = selector(e)
+                })
+                .Aggregate((a, b) => comparer.Compare(a.Value, b.Value) <= 0 ? a : b)
+                .Element;
+        }
+
+        public static TElement WithMax<TElement, TValue>(this ParallelQuery<TElement> sequence, Func<TElement, TValue> selector)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+            else if (selector == null)
+            {
+                throw new ArgumentNullException("selector");
+            }
+
+            IComparer<TValue> comparer = Comparer<TValue>.Default;
+
+            return sequence
+                .Select(e => new
+                {
+                    Element = e,
+                    Value = selector(e)
+                })
+                .Aggregate((a, b) => comparer.Compare(a.Value, b.Value) >= 0 ? a : b)
+                .Element;
+        }
+
+        public static TElement WithMin<TElement, TValue>(this ParallelQuery<TElement> sequence, Func<TElement, TValue> selector)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+            else if (selector == null)
+            {
+                throw new ArgumentNullException("selector");
+            }
+
+            IComparer<TValue> comparer = Comparer<TValue>.Default;
+
+            return sequence
+                .Select(e => new
+                {
+                    Element = e,
+                    Value = selector(e)
+                })
+                .Aggregate((a, b) => comparer.Compare(a.Value, b.Value) <= 0 ? a : b)
+                .Element;
+        }
     }
 }

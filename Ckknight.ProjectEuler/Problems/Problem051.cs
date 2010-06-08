@@ -23,7 +23,7 @@ namespace Ckknight.ProjectEuler.Problems
     {
         public override object CalculateResult()
         {
-            return new PrimeGenerator()
+            return PrimeGenerator.Instance
                 .OrderedGroupBy(p => (int)Math.Log10(p))
                 .Select(group => {
                     var primes = group.ToHashSet();

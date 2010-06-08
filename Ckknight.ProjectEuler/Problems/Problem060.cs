@@ -21,7 +21,7 @@ namespace Ckknight.ProjectEuler.Problems
         {
             int maximum = 10000;
 
-            long[] primes = new PrimeGenerator()
+            long[] primes = PrimeGenerator.Instance
                 .TakeWhile(p => p < maximum)
                 .ToArray();
 
@@ -36,8 +36,8 @@ namespace Ckknight.ProjectEuler.Problems
                 for (int j = i + 1; j < length; j++)
                 {
                     long bravo = primes[j];
-                    if (PrimeGenerator.IsPrime(bravo * alphaMultiplier + alpha) &&
-                        PrimeGenerator.IsPrime(alpha * MathUtilities.Pow(10, (long)Math.Log10(bravo) + 1) + bravo))
+                    if (PrimeGenerator.Instance.IsPrime(bravo * alphaMultiplier + alpha) &&
+                        PrimeGenerator.Instance.IsPrime(alpha * MathUtilities.Pow(10, (long)Math.Log10(bravo) + 1) + bravo))
                     {
                         pairs[i, j] = true;
                         pairs[j, i] = true;

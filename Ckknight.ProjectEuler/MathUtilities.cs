@@ -41,7 +41,17 @@ namespace Ckknight.ProjectEuler
             return GreatestCommonDivisor(value, other) == 1;
         }
 
+        public static bool AreRelativelyPrime(BigInteger value, BigInteger other)
+        {
+            return BigInteger.GreatestCommonDivisor(value, other).IsOne;
+        }
+
         public static int[] ToDigits(long value)
+        {
+            return ToDigits(value, false);
+        }
+
+        public static int[] ToDigits(long value, bool reverse)
         {
             if (value <= 0)
             {
@@ -51,16 +61,32 @@ namespace Ckknight.ProjectEuler
             int max = (int)Math.Floor(Math.Log10(value)) + 1;
             var array = new int[max];
 
-            for (int i = 0; i < max; i++)
+            if (reverse)
             {
-                array[i] = (int)(value % 10);
-                value /= 10;
+                for (int i = max - 1; i >= 0; i--)
+                {
+                    array[i] = (int)(value % 10);
+                    value /= 10;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < max; i++)
+                {
+                    array[i] = (int)(value % 10);
+                    value /= 10;
+                }
             }
 
             return array;
         }
 
         public static int[] ToDigits(BigInteger value)
+        {
+            return ToDigits(value, false);
+        }
+
+        public static int[] ToDigits(BigInteger value, bool reverse)
         {
             if (value.Sign <= 0)
             {
@@ -70,11 +96,23 @@ namespace Ckknight.ProjectEuler
             int max = (int)Math.Floor(BigInteger.Log10(value)) + 1;
             var array = new int[max];
 
-            for (int i = 0; i < max; i++)
+            if (reverse)
             {
-                BigInteger remainder;
-                value = BigInteger.DivRem(value, 10, out remainder);
-                array[i] = (int)remainder;
+                for (int i = max - 1; i >= 0; i--)
+                {
+                    BigInteger remainder;
+                    value = BigInteger.DivRem(value, 10, out remainder);
+                    array[i] = (int)remainder;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < max; i++)
+                {
+                    BigInteger remainder;
+                    value = BigInteger.DivRem(value, 10, out remainder);
+                    array[i] = (int)remainder;
+                }
             }
 
             return array;
@@ -309,6 +347,23 @@ namespace Ckknight.ProjectEuler
             }
         }
 
+        public static bool IsPerfectSquare(BigInteger number)
+        {
+            if (number.Sign < 0)
+            {
+                return false;
+            }
+            if (number.IsZero || number.IsOne)
+            {
+                return true;
+            }
+            else
+            {
+                BigInteger root = BigSqrt(number);
+                return root*root == number;
+            }
+        }
+
         public static bool IsPerfectSquare(int number)
         {
             if ((number < 0) || ((number & 2) != 0) || ((number & 7) == 5) || ((number & 11) == 8))
@@ -323,6 +378,43 @@ namespace Ckknight.ProjectEuler
             {
                 int root = (int)(Math.Sqrt(number));
                 return root * root == number;
+            }
+        }
+
+        public static BigInteger BigSqrt(BigInteger value)
+        {
+            if (value.Sign < 0)
+            {
+                throw new ArithmeticException("Cannot take the square root of a negative");
+            }
+            else if (value.IsZero)
+            {
+                return BigInteger.Zero;
+            }
+            else if (value.IsOne)
+            {
+                return BigInteger.One;
+            }
+            else
+            {
+                BigInteger a = BigInteger.One;
+                BigInteger b = (value >> 5) + 8;
+
+                while (b >= a)
+                {
+                    BigInteger m = (a + b) >> 1;
+
+                    if ((m * m) > value)
+                    {
+                        b = m - 1;
+                    }
+                    else
+                    {
+                        a = m + 1;
+                    }
+                }
+
+                return a - BigInteger.One;
             }
         }
     }

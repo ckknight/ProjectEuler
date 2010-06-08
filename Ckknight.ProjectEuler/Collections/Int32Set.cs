@@ -11,7 +11,7 @@ namespace Ckknight.ProjectEuler.Collections
     /// 
     /// This is meant to be very fast for adding, removing, and checking to see whether an Int32 is contained.
     /// </summary>
-    public class Int32Set : ICollection<int>
+    public class Int32Set : ISet<int>, ICollection<int>
     {
         public Int32Set(int capacity)
         {
@@ -20,7 +20,7 @@ namespace Ckknight.ProjectEuler.Collections
                 throw new ArgumentOutOfRangeException("capacity", capacity, "Must be at least 0");
             }
             _capacity = capacity;
-            _bucket = new BitArray(capacity);
+            _bucket = new BooleanArray(capacity);
         }
 
         public Int32Set(IEnumerable<int> sequence, int capacity)
@@ -42,7 +42,7 @@ namespace Ckknight.ProjectEuler.Collections
         }
 
         private readonly int _capacity;
-        private readonly BitArray _bucket;
+        private readonly BooleanArray _bucket;
 
         public int Capacity
         {
@@ -65,18 +65,9 @@ namespace Ckknight.ProjectEuler.Collections
 
         #region ICollection<int> Members
 
-        public void Add(int item)
+        void ICollection<int>.Add(int item)
         {
-            if (item < 0)
-            {
-                throw new ArgumentOutOfRangeException("item", item, "Must be at least 0");
-            }
-            else if (item >= _capacity)
-            {
-                throw new ArgumentOutOfRangeException("item", item, string.Format("Must be at most {0}", _capacity - 1));
-            }
-
-            _bucket[item] = true;
+            Add(item);
         }
 
         public void Clear()
@@ -151,6 +142,12 @@ namespace Ckknight.ProjectEuler.Collections
 
         #endregion
 
+        public ParallelQuery<int> AsParallel()
+        {
+            return ParallelEnumerable.Range(0, _capacity)
+                .Where(i => _bucket[i]);
+        }
+
         #region IEnumerable<int> Members
 
         public IEnumerator<int> GetEnumerator()
@@ -174,5 +171,203 @@ namespace Ckknight.ProjectEuler.Collections
         }
 
         #endregion
+
+        public bool Add(int item)
+        {
+            if (item < 0)
+            {
+                throw new ArgumentOutOfRangeException("item", item, "Must be at least 0");
+            }
+            else if (item >= _capacity)
+            {
+                throw new ArgumentOutOfRangeException("item", item, string.Format("Must be at most {0}", _capacity - 1));
+            }
+
+            if (_bucket[item])
+            {
+                return false;
+            }
+            else
+            {
+                _bucket[item] = true;
+                return true;
+            }
+        }
+
+        public void ExceptWith(IEnumerable<int> other)
+        {
+            if (other == null)
+            {
+                throw new ArgumentNullException("other");
+            }
+            foreach (int item in other)
+            {
+                _bucket[item] = false;
+            }
+        }
+
+        public void IntersectWith(IEnumerable<int> other)
+        {
+            if (other == null)
+            {
+                throw new ArgumentNullException("other");
+            }
+            ISet<int> otherSet = other as ISet<int> ?? other.ToHashSet();
+            foreach (int item in this)
+            {
+                if (!otherSet.Contains(item))
+                {
+                    _bucket[item] = false;
+                }
+            }
+        }
+
+        public bool IsProperSubsetOf(IEnumerable<int> other)
+        {
+            if (other == null)
+            {
+                throw new ArgumentNullException("other");
+            }
+            
+            ISet<int> otherSet = other as ISet<int> ?? other.ToHashSet();
+            foreach (int item in this)
+            {
+                if (!otherSet.Contains(item))
+                {
+                    return false;
+                }
+            }
+            foreach (int item in otherSet)
+            {
+                if (!Contains(item))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool IsProperSupersetOf(IEnumerable<int> other)
+        {
+            if (other == null)
+            {
+                throw new ArgumentNullException("other");
+            }
+
+            ISet<int> otherSet = other as ISet<int> ?? other.ToHashSet();
+            foreach (int item in otherSet)
+            {
+                if (!Contains(item))
+                {
+                    return false;
+                }
+            }
+
+            foreach (int item in this)
+            {
+                if (!otherSet.Contains(item))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool IsSubsetOf(IEnumerable<int> other)
+        {
+            if (other == null)
+            {
+                throw new ArgumentNullException("other");
+            }
+
+            ISet<int> otherSet = other as ISet<int> ?? other.ToHashSet();
+            foreach (int item in this)
+            {
+                if (!otherSet.Contains(item))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public bool IsSupersetOf(IEnumerable<int> other)
+        {
+            if (other == null)
+            {
+                throw new ArgumentNullException("other");
+            }
+
+            foreach (int item in other)
+            {
+                if (!Contains(item))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public bool Overlaps(IEnumerable<int> other)
+        {
+            if (other == null)
+            {
+                throw new ArgumentNullException("other");
+            }
+
+            foreach (int item in other)
+            {
+                if (Contains(item))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool SetEquals(IEnumerable<int> other)
+        {
+            if (other == null)
+            {
+                throw new ArgumentNullException("other");
+            }
+
+            var otherSet = other.ToHashSet();
+            foreach (int item in this)
+            {
+                if (!otherSet.Contains(item))
+                {
+                    return false;
+                }
+                otherSet.Remove(item);
+            }
+            return otherSet.Count == 0;
+        }
+
+        public void SymmetricExceptWith(IEnumerable<int> other)
+        {
+            if (other == null)
+            {
+                throw new ArgumentNullException("other");
+            }
+
+            foreach (int item in other.Distinct())
+            {
+                _bucket[item] = !_bucket[item];
+            }
+        }
+
+        public void UnionWith(IEnumerable<int> other)
+        {
+            if (other == null)
+            {
+                throw new ArgumentNullException("other");
+            }
+
+            foreach (int item in other)
+            {
+                _bucket[item] = true;
+            }
+        }
     }
 }

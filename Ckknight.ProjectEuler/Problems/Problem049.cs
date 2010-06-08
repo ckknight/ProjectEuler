@@ -22,7 +22,7 @@ namespace Ckknight.ProjectEuler.Problems
     {
         public override object CalculateResult()
         {
-            return new PrimeGenerator()
+            return PrimeGenerator.Instance
                 .SkipWhile(n => n < 1000)
                 .TakeWhile(n => n < 10000)
                 .Where(n => n != 1487)
@@ -32,8 +32,8 @@ namespace Ckknight.ProjectEuler.Problems
                     B = n + 3330,
                     C = n + 3330*2,
                 })
-                .Where(x => PrimeGenerator.IsPrime(x.B))
-                .Where(x => PrimeGenerator.IsPrime(x.C))
+                .Where(x => PrimeGenerator.Instance.IsPrime(x.B))
+                .Where(x => PrimeGenerator.Instance.IsPrime(x.C))
                 .Where(x =>
                 {
                     var set = MathUtilities.ToDigits(x.A)

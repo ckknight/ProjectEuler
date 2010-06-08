@@ -20,7 +20,7 @@ namespace Ckknight.ProjectEuler.Problems
         public override object CalculateResult()
         {
             var digitRepresentations = new Range(0, 9, true)
-                .Select(n => PrimeGenerator.GetPrimeAtIndex(n))
+                .Select(n => PrimeGenerator.Instance.GetPrimeAtIndex(n))
                 .ToArray();
 
             return new Range(1, int.MaxValue)

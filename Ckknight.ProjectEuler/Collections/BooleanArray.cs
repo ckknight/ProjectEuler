@@ -9,13 +9,24 @@ namespace Ckknight.ProjectEuler.Collections
     public class BooleanArray : IList<bool>, IList
     {
         public BooleanArray(int length)
+            : this(length, false) { }
+
+        public BooleanArray(int length, bool defaultValue)
         {
             if (length < 0)
             {
                 throw new ArgumentOutOfRangeException("length", length, "Must be at least 0");
             }
             _length = length;
-            _data = new byte[GetDataLength(length)];
+            int dataLength = GetDataLength(length);
+            _data = new byte[dataLength];
+            if (defaultValue)
+            {
+                for (int i = 0; i < dataLength; i++)
+                {
+                    _data[i] = 255;
+                }
+            }
         }
 
         public BooleanArray(BooleanArray source)
@@ -337,7 +348,7 @@ namespace Ckknight.ProjectEuler.Collections
             }
         }
 
-        public bool IsSynchronized
+        bool ICollection.IsSynchronized
         {
             get
             {
@@ -345,12 +356,18 @@ namespace Ckknight.ProjectEuler.Collections
             }
         }
 
-        public object SyncRoot
+        object ICollection.SyncRoot
         {
             get
             {
                 return this;
             }
+        }
+
+        public ParallelQuery<bool> AsParallel()
+        {
+            return ParallelEnumerable.Range(0, _length)
+                .Select(i => this[i]);
         }
     }
 }

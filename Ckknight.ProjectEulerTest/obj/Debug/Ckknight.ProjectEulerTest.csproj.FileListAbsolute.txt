@@ -1,0 +1,14 @@
+C:\Users\cknight.CURSE\Documents\Visual Studio 2010\Projects\Ckknight.ProjectEuler\Ckknight.ProjectEulerTest\bin\Debug\Ckknight.ProjectEulerTest.dll
+C:\Users\cknight.CURSE\Documents\Visual Studio 2010\Projects\Ckknight.ProjectEuler\Ckknight.ProjectEulerTest\bin\Debug\Ckknight.ProjectEulerTest.pdb
+C:\Users\cknight.CURSE\Documents\Visual Studio 2010\Projects\Ckknight.ProjectEuler\Ckknight.ProjectEulerTest\bin\Debug\Ckknight.ProjectEuler.exe
+C:\Users\cknight.CURSE\Documents\Visual Studio 2010\Projects\Ckknight.ProjectEuler\Ckknight.ProjectEulerTest\bin\Debug\Ckknight.ProjectEuler.pdb
+C:\Users\cknight.CURSE\Documents\Visual Studio 2010\Projects\Ckknight.ProjectEuler\Ckknight.ProjectEulerTest\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\cknight.CURSE\Documents\Visual Studio 2010\Projects\Ckknight.ProjectEuler\Ckknight.ProjectEulerTest\obj\Debug\Ckknight.ProjectEulerTest.dll
+C:\Users\cknight.CURSE\Documents\Visual Studio 2010\Projects\Ckknight.ProjectEuler\Ckknight.ProjectEulerTest\obj\Debug\Ckknight.ProjectEulerTest.pdb
+C:\Users\ckknight\Documents\Visual Studio 2010\Projects\Ckknight.ProjectEuler\Ckknight.ProjectEulerTest\bin\Debug\Ckknight.ProjectEulerTest.dll
+C:\Users\ckknight\Documents\Visual Studio 2010\Projects\Ckknight.ProjectEuler\Ckknight.ProjectEulerTest\bin\Debug\Ckknight.ProjectEulerTest.pdb
+C:\Users\ckknight\Documents\Visual Studio 2010\Projects\Ckknight.ProjectEuler\Ckknight.ProjectEulerTest\bin\Debug\Ckknight.ProjectEuler.exe
+C:\Users\ckknight\Documents\Visual Studio 2010\Projects\Ckknight.ProjectEuler\Ckknight.ProjectEulerTest\bin\Debug\Ckknight.ProjectEuler.pdb
+C:\Users\ckknight\Documents\Visual Studio 2010\Projects\Ckknight.ProjectEuler\Ckknight.ProjectEulerTest\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\ckknight\Documents\Visual Studio 2010\Projects\Ckknight.ProjectEuler\Ckknight.ProjectEulerTest\obj\Debug\Ckknight.ProjectEulerTest.dll
+C:\Users\ckknight\Documents\Visual Studio 2010\Projects\Ckknight.ProjectEuler\Ckknight.ProjectEulerTest\obj\Debug\Ckknight.ProjectEulerTest.pdb
