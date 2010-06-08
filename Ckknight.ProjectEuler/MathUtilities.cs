@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections;
 using System.Numerics;
+using Ckknight.ProjectEuler.Collections;
 
 namespace Ckknight.ProjectEuler
 {
@@ -416,6 +417,13 @@ namespace Ckknight.ProjectEuler
 
                 return a - BigInteger.One;
             }
+        }
+
+        public static long Totient(long n)
+        {
+            return new PrimeFactorGenerator(n)
+                .Distinct()
+                .Aggregate(n, (x, p) => x * (p - 1) / p);
         }
     }
 }

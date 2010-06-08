@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="BigFraction.cs" />
     <Compile Include="BigContinuedFraction.cs" />
+    <Compile Include="Collections\BinaryTree.cs" />
     <Compile Include="Collections\CombinationGenerator.cs" />
     <Compile Include="Collections\BooleanArray.cs" />
     <Compile Include="Collections\BooleanMatrix.cs" />
@@ -139,6 +140,8 @@
     <Compile Include="Problems\Problem069.cs" />
     <Compile Include="Problems\Problem070.cs" />
     <Compile Include="Problems\Problem071.cs" />
+    <Compile Include="Problems\Problem072.cs" />
+    <Compile Include="Problems\Problem073.cs" />
     <Compile Include="Problems\ProblemAttribute.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

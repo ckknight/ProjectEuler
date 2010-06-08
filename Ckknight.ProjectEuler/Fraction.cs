@@ -351,6 +351,11 @@ namespace Ckknight.ProjectEuler
             return Log(number, 10.0);
         }
 
+        public static Fraction Mediant(Fraction alpha, Fraction bravo)
+        {
+            return new Fraction(alpha._numerator + bravo._numerator, alpha._denominator + bravo._denominator);
+        }
+
         public static Fraction operator *(Fraction multiplicand, Fraction multiplier)
         {
             if (multiplicand._denominator == 0 || multiplier._denominator == 0)
