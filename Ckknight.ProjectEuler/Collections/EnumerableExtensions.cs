@@ -818,5 +818,53 @@ namespace Ckknight.ProjectEuler.Collections
                 .Aggregate((a, b) => comparer.Compare(a.Value, b.Value) <= 0 ? a : b)
                 .Element;
         }
+
+        public static bool IsPermutation<T>(this IEnumerable<T> sequence, IEnumerable<T> other)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+            else if (other == null)
+            {
+                throw new ArgumentNullException("other");
+            }
+
+            List<T> otherList = other.ToList();
+            ICollection<T> collection = sequence as ICollection<T>;
+            if (collection != null && collection.Count != otherList.Count)
+            {
+                return false;
+            }
+            foreach (T item in sequence)
+            {
+                if (!otherList.Remove(item))
+                {
+                    return false;
+                }
+            }
+            return otherList.Count == 0;
+        }
+
+        public static IEnumerable<T> AssertEach<T>(this IEnumerable<T> sequence, Func<T, bool> tester)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+
+            List<T> list = new List<T>();
+
+            foreach (T item in sequence)
+            {
+                if (!tester(item))
+                {
+                    throw new InvalidOperationException(string.Format("Item #{0} ({1}) failed test", list.Count + 1, item));
+                }
+                list.Add(item);
+            }
+
+            return list;
+        }
     }
 }

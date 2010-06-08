@@ -214,5 +214,59 @@ namespace Ckknight.ProjectEuler.Collections
             return Partitioner.Create<long>(GetUpTo(upToAmount))
                 .AsParallel();
         }
+
+        public IEnumerable<long> GetComposites()
+        {
+            long value = 2;
+            foreach (long prime in this)
+            {
+                while (value < prime)
+                {
+                    yield return value++;
+                }
+                value = prime + 1;
+            }
+        }
+
+        public IEnumerable<long> GetCompositesUpTo(long amount)
+        {
+            long value = 2;
+            foreach (long prime in GetUpTo(amount))
+            {
+                while (value < prime)
+                {
+                    yield return value++;
+                }
+                value = prime + 1;
+            }
+        }
+
+        public IEnumerable<Tuple<long, long>> GetSemiprimesUpTo(long amount, bool includePerfectSquares)
+        {
+            CalculateUpTo(amount / 2);
+
+            long sqrt = (long)Math.Floor(Math.Sqrt(amount));
+
+            int skipAmount = includePerfectSquares ? 0 : 1;
+
+            return GetUpTo(sqrt)
+                .SelectMany((p, i) => GetUpTo(amount / p)
+                    .Skip(skipAmount + i)
+                    .Select(q => new Tuple<long, long>(p, q)));
+        }
+
+        public ParallelQuery<Tuple<long, long>> GetParallelSemiprimesUpTo(long amount, bool includePerfectSquares)
+        {
+            CalculateUpTo(amount / 2);
+
+            long sqrt = (long)Math.Floor(Math.Sqrt(amount));
+
+            int skipAmount = includePerfectSquares ? 0 : 1;
+
+            return AsParallel(sqrt)
+                .SelectMany((p, i) => GetUpTo(amount / p)
+                    .Skip(skipAmount + i)
+                    .Select(q => new Tuple<long, long>(p, q)));
+        }
     }
 }
