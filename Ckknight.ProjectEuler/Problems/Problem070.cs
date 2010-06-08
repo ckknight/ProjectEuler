@@ -27,14 +27,8 @@ namespace Ckknight.ProjectEuler.Problems
             return PrimeGenerator.Instance.GetParallelSemiprimesUpTo(10000000, false)
                 .Select(x => new
                 {
-                    p = x.Item1,
-                    q = x.Item2,
-                    n = x.Item1 * x.Item2
-                })
-                .Select(x => new
-                {
-                    n = x.n,
-                    t = x.n - (x.p + x.q) + 1
+                    n = x.Item1 * x.Item2,
+                    t = (x.Item1 - 1) * (x.Item2 - 1)
                 })
                 .Concat(PrimeGenerator.Instance.AsParallel((long)Math.Sqrt(10000000))
                     .Select(p => new
