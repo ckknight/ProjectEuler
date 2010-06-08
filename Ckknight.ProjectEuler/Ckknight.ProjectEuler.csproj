@@ -46,11 +46,10 @@
   <ItemGroup>
     <Compile Include="BigFraction.cs" />
     <Compile Include="BigContinuedFraction.cs" />
-    <Compile Include="Collections\BetterCombinationGenerator.cs" />
+    <Compile Include="Collections\CombinationGenerator.cs" />
     <Compile Include="Collections\BooleanArray.cs" />
     <Compile Include="Collections\BooleanMatrix.cs" />
     <Compile Include="Collections\PrimeGenerator.cs" />
-    <Compile Include="Collections\CombinationGenerator.cs" />
     <Compile Include="Collections\DefaultDictionary.cs" />
     <Compile Include="ContinuedFraction.cs" />
     <Compile Include="Collections\EnumerableExtensions.cs" />

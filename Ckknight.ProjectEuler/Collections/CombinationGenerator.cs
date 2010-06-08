@@ -6,16 +6,7 @@ using System.Collections;
 
 namespace Ckknight.ProjectEuler.Collections
 {
-    /// <summary>
-    /// Represents an object which generates combinations based on a given
-    /// enumerable and the size of the combinations to generate.
-    /// 
-    /// The generated combinations will be in the same order as passed in, and
-    /// will have n!/(k!(n - k)!) results, where n and k are the source length
-    /// and the combination length.
-    /// </summary>
-    /// <typeparam name="T">The element type of the sequence</typeparam>
-    public sealed class CombinationGenerator<T> : IEnumerable<T[]>
+    public class CombinationGenerator<T> : IEnumerable<T[]>
     {
         /// <summary>
         /// Initialize a new CombinationGenerator based on the conditions.
@@ -39,32 +30,7 @@ namespace Ckknight.ProjectEuler.Collections
 
         private readonly IEnumerable<T> _source;
         private readonly int _amount;
-
-        private static bool UpdatePositions(int[] positions, int sourceLength, int index)
-        {
-            int amount = positions.Length;
-            int position = positions[index];
-            if (position >= sourceLength + index - amount)
-            {
-                if (index == 0)
-                {
-                    return false;
-                }
-                if (!UpdatePositions(positions, sourceLength, index - 1))
-                {
-                    return false;
-                }
-                positions[index] = positions[index - 1] + 1;
-            }
-            else
-            {
-                positions[index]++;
-            }
-            return true;
-        }
-
-        #region IEnumerable<T[]> Members
-
+        
         /// <summary>
         /// Return an enumerator which iterates over all combinations.
         /// </summary>
@@ -73,17 +39,14 @@ namespace Ckknight.ProjectEuler.Collections
         {
             if (_amount == 0)
             {
-                yield break;
+                return Enumerable.Empty<T[]>()
+                    .GetEnumerator();
             }
             else if (_amount == 1)
             {
-                T[] result = new T[1];
-
-                foreach (T item in _source)
-                {
-                    result[0] = item;
-                    yield return result;
-                }
+                return _source
+                    .Select(x => new[] { x })
+                    .GetEnumerator();
             }
             else
             {
@@ -92,41 +55,26 @@ namespace Ckknight.ProjectEuler.Collections
                 int length = array.Length;
                 if (_amount > length)
                 {
-                    yield break;
+                    return Enumerable.Empty<T[]>()
+                        .GetEnumerator();
                 }
-
-                int[] positions = new int[_amount];
-                for (int i = 0; i < _amount - 1; i++)
-                {
-                    positions[i] = i;
-                }
-                positions[_amount - 1] = _amount - 2;
-
-                while (UpdatePositions(positions, length, _amount - 1))
-                {
-                    T[] result = new T[_amount];
-                    for (int i = 0; i < _amount; i++)
-                    {
-                        result[i] = array[positions[i]];
-                    }
-                    yield return result;
-                }
+                
+                return new Range(_amount)
+                    .Aggregate(new List<ImmutableSequence<int>> { ImmutableSequence<int>.Empty }.AsEnumerable(),
+                    (x, i) => x
+                        .SelectMany(seq => new Range(seq.HasValue ? seq.First() + 1 : 0, length - _amount + i, true)
+                            .Select(n => new ImmutableSequence<int>(n, seq))))
+                    .Select(s => s
+                        .Reverse()
+                        .Select(i => array[i])
+                        .ToArray())
+                    .GetEnumerator();
             }
         }
 
-        #endregion
-
-        #region IEnumerable Members
-
-        /// <summary>
-        /// Return an enumerator which iterates over all combinations.
-        /// </summary>
-        /// <returns>The combination enumerator.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
         }
-
-        #endregion
     }
 }
