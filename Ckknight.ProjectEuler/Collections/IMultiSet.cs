@@ -9,5 +9,6 @@ namespace Ckknight.ProjectEuler.Collections
     {
         int GetCount(T item);
         IEnumerable<T> Distinct();
+        IEnumerable<KeyValuePair<T, int>> GetCounts();
     }
 }

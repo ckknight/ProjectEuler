@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections;
+using System.Collections.ObjectModel;
 
 namespace Ckknight.ProjectEuler.Collections
 {
@@ -71,6 +72,14 @@ namespace Ckknight.ProjectEuler.Collections
         public IEnumerable<T> Distinct()
         {
             return _data.Keys;
+        }
+
+        public IEnumerable<KeyValuePair<T, int>> GetCounts()
+        {
+            foreach (var pair in _data)
+            {
+                yield return pair;
+            }
         }
 
         public void Add(T item)
