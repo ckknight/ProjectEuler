@@ -226,7 +226,7 @@ namespace Ckknight.ProjectEuler
             {
                 return 0;
             }
-            else if (exponent == 0)
+            else if (exponent == 0 || number == 1)
             {
                 return 1;
             }
@@ -234,9 +234,24 @@ namespace Ckknight.ProjectEuler
             {
                 return number;
             }
+            else if (exponent == 2)
+            {
+                return number * number;
+            }
             else if (exponent < 0)
             {
                 throw new ArgumentOutOfRangeException("exponent", exponent, "Must be at least 0");
+            }
+            else if (number == -1)
+            {
+                if ((exponent & 1) == 0)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return -1;
+                }
             }
 
             int result = 1;
@@ -259,7 +274,7 @@ namespace Ckknight.ProjectEuler
             {
                 return 0L;
             }
-            else if (exponent == 0L)
+            else if (exponent == 0L || number == 1L)
             {
                 return 1L;
             }
@@ -274,6 +289,17 @@ namespace Ckknight.ProjectEuler
             else if (exponent < 0L)
             {
                 throw new ArgumentOutOfRangeException("exponent", exponent, "Must be at least 0");
+            }
+            else if (number == -1L)
+            {
+                if ((exponent & 1L) == 0)
+                {
+                    return 1L;
+                }
+                else
+                {
+                    return -1L;
+                }
             }
 
             long result = 1L;
@@ -305,7 +331,7 @@ namespace Ckknight.ProjectEuler
             {
                 return 0L;
             }
-            else if (exponent == 0L)
+            else if (exponent == 0L || number == 1L)
             {
                 return 1L;
             }

@@ -49,6 +49,7 @@
     <Compile Include="Collections\CombinationGenerator.cs" />
     <Compile Include="Collections\BooleanArray.cs" />
     <Compile Include="Collections\BooleanMatrix.cs" />
+    <Compile Include="Collections\DictionaryExtensions.cs" />
     <Compile Include="Collections\PrimeGenerator.cs" />
     <Compile Include="Collections\DefaultDictionary.cs" />
     <Compile Include="ContinuedFraction.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="Problems\Problem073.cs" />
     <Compile Include="Problems\Problem074.cs" />
     <Compile Include="Problems\Problem075.cs" />
+    <Compile Include="Problems\Problem076.cs" />
     <Compile Include="Problems\ProblemAttribute.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
