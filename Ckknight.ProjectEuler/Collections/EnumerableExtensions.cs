@@ -206,6 +206,20 @@ namespace Ckknight.ProjectEuler.Collections
             return value;
         }
 
+        public static BigInteger Sum<T>(this IEnumerable<T> sequence, Func<T, BigInteger> selector)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+            else if (selector == null)
+            {
+                throw new ArgumentNullException("selector");
+            }
+
+            return sequence.Select(selector).Sum();
+        }
+
         public static BigInteger Sum(this IEnumerable<BigInteger> sequence)
         {
             if (sequence == null)
@@ -213,12 +227,26 @@ namespace Ckknight.ProjectEuler.Collections
                 throw new ArgumentNullException("sequence");
             }
 
-            BigInteger value = 0;
+            BigInteger value = BigInteger.Zero;
             foreach (BigInteger item in sequence)
             {
                 value += item;
             }
             return value;
+        }
+
+        public static BigInteger Product<T>(this IEnumerable<T> sequence, Func<T, BigInteger> selector)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+            else if (selector == null)
+            {
+                throw new ArgumentNullException("selector");
+            }
+
+            return sequence.Select(selector).Product();
         }
 
         public static BigInteger Product(this IEnumerable<BigInteger> sequence)
@@ -228,7 +256,7 @@ namespace Ckknight.ProjectEuler.Collections
                 throw new ArgumentNullException("sequence");
             }
 
-            BigInteger value = 1;
+            BigInteger value = BigInteger.One;
             foreach (BigInteger item in sequence)
             {
                 value *= item;
