@@ -22,10 +22,7 @@ namespace Ckknight.ProjectEuler.Collections
             _data = new byte[dataLength];
             if (defaultValue)
             {
-                for (int i = 0; i < dataLength; i++)
-                {
-                    _data[i] = 255;
-                }
+                SetAll(true);
             }
         }
 
@@ -85,6 +82,16 @@ namespace Ckknight.ProjectEuler.Collections
                     }
                 }
                 _data[byteAlignedLength >> 3] = value;
+            }
+        }
+
+        public void SetAll(bool value)
+        {
+            int length = _data.Length;
+            byte byteValue = value ? byte.MaxValue : (byte)0;
+            for (int i = 0; i < length; i++)
+            {
+                _data[i] = byteValue;
             }
         }
 

@@ -23,6 +23,15 @@ namespace Ckknight.ProjectEuler.Collections
             _bucket = new BooleanArray(capacity);
         }
 
+        public Int32Set(int capacity, bool includeAllInitially)
+            : this(capacity)
+        {
+            if (includeAllInitially)
+            {
+                _bucket.SetAll(true);
+            }
+        }
+
         public Int32Set(IEnumerable<int> sequence, int capacity)
             : this(capacity)
         {
@@ -72,10 +81,7 @@ namespace Ckknight.ProjectEuler.Collections
 
         public void Clear()
         {
-            for (int i = 0; i < _capacity; i++)
-            {
-                _bucket[i] = false;
-            }
+            _bucket.SetAll(false);
         }
 
         public bool Contains(int item)
@@ -202,7 +208,10 @@ namespace Ckknight.ProjectEuler.Collections
             }
             foreach (int item in other)
             {
-                _bucket[item] = false;
+                if (item >= 0 && item < _capacity)
+                {
+                    _bucket[item] = false;
+                }
             }
         }
 
@@ -353,7 +362,10 @@ namespace Ckknight.ProjectEuler.Collections
 
             foreach (int item in other.Distinct())
             {
-                _bucket[item] = !_bucket[item];
+                if (item >= 0 && item < _capacity)
+                {
+                    _bucket[item] = !_bucket[item];
+                }
             }
         }
 
@@ -366,7 +378,10 @@ namespace Ckknight.ProjectEuler.Collections
 
             foreach (int item in other)
             {
-                _bucket[item] = true;
+                if (item >= 0 && item < _capacity)
+                {
+                    _bucket[item] = true;
+                }
             }
         }
     }

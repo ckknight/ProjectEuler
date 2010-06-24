@@ -44,12 +44,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BigDecimal.cs" />
     <Compile Include="BigFraction.cs" />
     <Compile Include="BigContinuedFraction.cs" />
     <Compile Include="Collections\CombinationGenerator.cs" />
     <Compile Include="Collections\BooleanArray.cs" />
     <Compile Include="Collections\BooleanMatrix.cs" />
     <Compile Include="Collections\DictionaryExtensions.cs" />
+    <Compile Include="Collections\Int32PointSet.cs" />
+    <Compile Include="Collections\MemorableEnumerable.cs" />
+    <Compile Include="Collections\Point.cs" />
+    <Compile Include="FuncExtensions.cs" />
     <Compile Include="Collections\PrimeGenerator.cs" />
     <Compile Include="Collections\DefaultDictionary.cs" />
     <Compile Include="ContinuedFraction.cs" />
@@ -147,6 +152,27 @@
     <Compile Include="Problems\Problem076.cs" />
     <Compile Include="Problems\Problem077.cs" />
     <Compile Include="Problems\Problem078.cs" />
+    <Compile Include="Problems\Problem079.cs" />
+    <Compile Include="Problems\Problem080.cs" />
+    <Compile Include="Problems\Problem081.cs" />
+    <Compile Include="Problems\Problem082.cs" />
+    <Compile Include="Problems\Problem083.cs" />
+    <Compile Include="Problems\Problem084.cs" />
+    <Compile Include="Problems\Problem085.cs" />
+    <Compile Include="Problems\Problem086.cs" />
+    <Compile Include="Problems\Problem087.cs" />
+    <Compile Include="Problems\Problem088.cs" />
+    <Compile Include="Problems\Problem089.cs" />
+    <Compile Include="Problems\Problem090.cs" />
+    <Compile Include="Problems\Problem091.cs" />
+    <Compile Include="Problems\Problem092.cs" />
+    <Compile Include="Problems\Problem093.cs" />
+    <Compile Include="Problems\Problem094.cs" />
+    <Compile Include="Problems\Problem095.cs" />
+    <Compile Include="Problems\Problem096.cs" />
+    <Compile Include="Problems\Problem097.cs" />
+    <Compile Include="Problems\Problem098.cs" />
+    <Compile Include="Problems\Problem099.cs" />
     <Compile Include="Problems\ProblemAttribute.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

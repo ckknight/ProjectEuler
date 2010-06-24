@@ -77,6 +77,11 @@ namespace Ckknight.ProjectEuler.Collections
             return string.Join(separator, sequence);
         }
 
+        public static string StringJoin<T, TResult>(this IEnumerable<T> sequence, string separator, Func<T, TResult> selector)
+        {
+            return string.Join(separator, sequence.Select(selector));
+        }
+
         /// <summary>
         /// Return an enumerable that skips the last <paramref name="count"/> items of the given <paramref name="sequence"/>.
         /// </summary>
@@ -105,6 +110,36 @@ namespace Ckknight.ProjectEuler.Collections
                 }
                 queue.Enqueue(item);
             }
+        }
+
+        public static IEnumerable<T> TakeLast<T>(this IEnumerable<T> sequence, int count)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+            else if (count < 0)
+            {
+                throw new ArgumentOutOfRangeException("count", count, "Must be at least 0");
+            }
+
+            if (count == 0)
+            {
+                return Enumerable.Empty<T>();
+            }
+
+            Queue<T> queue = new Queue<T>(count);
+
+            foreach (T item in sequence)
+            {
+                if (queue.Count == count)
+                {
+                    queue.Dequeue();
+                }
+                queue.Enqueue(item);
+            }
+
+            return queue;
         }
 
         /// <summary>
@@ -755,6 +790,35 @@ namespace Ckknight.ProjectEuler.Collections
             }
         }
 
+        public static bool IsDistinct<T>(this IEnumerable<T> sequence)
+        {
+            return IsDistinct(sequence, null);
+        }
+
+        public static bool IsDistinct<T>(this IEnumerable<T> sequence, IEqualityComparer<T> comparer)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+
+            if (comparer == null)
+            {
+                comparer = EqualityComparer<T>.Default;
+            }
+
+            HashSet<T> set = new HashSet<T>(comparer);
+            foreach (T item in sequence)
+            {
+                if (set.Contains(item))
+                {
+                    return false;
+                }
+                set.Add(item);
+            }
+            return true;
+        }
+
         public static TElement WithMax<TElement, TValue>(this IEnumerable<TElement> sequence, Func<TElement, TValue> selector)
         {
             if (sequence == null)
@@ -880,6 +944,10 @@ namespace Ckknight.ProjectEuler.Collections
             {
                 throw new ArgumentNullException("sequence");
             }
+            else if (tester == null)
+            {
+                throw new ArgumentNullException("tester");
+            }
 
             List<T> list = new List<T>();
 
@@ -893,6 +961,215 @@ namespace Ckknight.ProjectEuler.Collections
             }
 
             return list;
+        }
+
+        public static void ForEach<T>(this IEnumerable<T> sequence, Action<T> action)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+            else if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
+
+            foreach (T item in sequence)
+            {
+                action(item);
+            }
+        }
+
+        public static void ForEach<T>(this IEnumerable<T> sequence, Action<T, int> action)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+            else if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
+
+
+            int i = 0;
+            foreach (T item in sequence)
+            {
+                action(item, i++);
+            }
+        }
+
+        /// <summary>
+        /// Return a shuffled sequence of the sequence passed in.
+        /// </summary>
+        /// <typeparam name="T">Type of the sequence</typeparam>
+        /// <param name="sequence">The sequence to check</param>
+        /// <returns>A sequence with the same values in a random order.</returns>
+        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> sequence)
+        {
+            return sequence.Shuffle(null);
+        }
+
+        [ThreadStatic]
+        private static readonly Random _random = MathUtilities.CreateRandom();
+        /// <summary>
+        /// Return a shuffled sequence of the sequence passed in.
+        /// </summary>
+        /// <typeparam name="T">Type of the sequence</typeparam>
+        /// <param name="sequence">The sequence to check</param>
+        /// <param name="random">The random object to get new indices from.</param>
+        /// <returns>A sequence with the same values in a random order.</returns>
+        public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> sequence, Random random)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+            if (random == null)
+            {
+                random = _random;
+            }
+            T[] array = sequence.ToArray();
+            int length = array.Length;
+            for (int i = length - 1; i > 0; i--)
+            {
+                int index = random.Next(i);
+                if (index != i)
+                {
+                    T tmp = array[i];
+                    array[i] = array[index];
+                    array[index] = tmp;
+                }
+            }
+            return array;
+        }
+
+        public static T[,] ToMatrix<T>(this T[][] jaggedArray)
+        {
+            if (jaggedArray == null)
+            {
+                throw new ArgumentNullException("jaggedArray");
+            }
+
+            int height = jaggedArray.Length;
+            if (height == 0)
+            {
+                return new T[0, 0];
+            }
+
+            if (jaggedArray[0] == null)
+            {
+                throw new ArgumentException("First array is null", "jaggedArray");
+            }
+            int width = jaggedArray[0].Length;
+
+            T[,] result = new T[width, height];
+
+            for (int i = 0; i < height; i++)
+            {
+                T[] array = jaggedArray[i];
+                if (array == null)
+                {
+                    throw new ArgumentException(string.Format("Array #{0} is null", i), "jaggedArray");
+                }
+
+                if (array.Length != width)
+                {
+                    throw new ArgumentException(string.Format("Array #{0} has a width of {1}, expected {2}", i, array.Length, width), "jaggedArray");
+                }
+
+                for (int j = 0; j < width; j++)
+                {
+                    result[j, i] = array[j];
+                }
+            }
+
+            return result;
+        }
+
+        public static Queue<T> ToQueue<T>(this IEnumerable<T> sequence)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+
+            return new Queue<T>(sequence);
+        }
+
+        public static Stack<T> ToStack<T>(this IEnumerable<T> sequence)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+
+            return new Stack<T>(sequence);
+        }
+
+        public static IEnumerable<Tuple<T1, T2>> CrossProduct<T1, T2>(this IEnumerable<T1> sequence, IEnumerable<T2> other)
+        {
+            return CrossProduct(sequence, other, (a, b) => new Tuple<T1, T2>(a, b));
+        }
+
+        public static IEnumerable<TResult> CrossProduct<T1, T2, TResult>(this IEnumerable<T1> sequence, IEnumerable<T2> other, Func<T1, T2, TResult> selector)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+            else if (other == null)
+            {
+                throw new ArgumentNullException("other");
+            }
+            else if (selector == null)
+            {
+                throw new ArgumentNullException("selector");
+            }
+
+            T2[] array = other as T2[] ?? other.ToArray();
+            if (other == sequence)
+            {
+                sequence = array as T1[];
+            }
+
+            return sequence
+                .SelectMany(a => array
+                    .Select(b => selector(a, b)));
+        }
+
+        public static MemorableEnumerable<T> ToMemorableEnumerable<T>(this IEnumerable<T> sequence)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException("sequence");
+            }
+
+            return new MemorableEnumerable<T>(sequence);
+        }
+
+        public static IEnumerable<T[]> Partition<T>(this IEnumerable<T> sequence, int amount)
+        {
+            if (amount < 1)
+            {
+                throw new ArgumentOutOfRangeException("amount", amount, "Must be at least 1");
+            }
+
+            List<T> list = new List<T>(amount);
+            foreach (T item in sequence)
+            {
+                if (list.Count == amount)
+                {
+                    yield return list.ToArray();
+                    list.Clear();
+                }
+
+                list.Add(item);
+            }
+            if (list.Count > 0)
+            {
+                yield return list.ToArray();
+            }
         }
     }
 }

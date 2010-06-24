@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections;
 using System.Numerics;
 using Ckknight.ProjectEuler.Collections;
+using System.Security.Cryptography;
 
 namespace Ckknight.ProjectEuler
 {
@@ -121,6 +122,11 @@ namespace Ckknight.ProjectEuler
 
         public static long FromDigits(IEnumerable<int> digits)
         {
+            return FromDigits(digits, false);
+        }
+
+        public static long FromDigits(IEnumerable<int> digits, bool reverse)
+        {
             if (digits == null)
             {
                 throw new ArgumentNullException("digits");
@@ -128,6 +134,11 @@ namespace Ckknight.ProjectEuler
 
             long total = 0;
             long power = 1;
+
+            if (reverse)
+            {
+                digits = digits.Reverse();
+            }
 
             foreach (int digit in digits)
             {
@@ -140,6 +151,11 @@ namespace Ckknight.ProjectEuler
 
         public static BigInteger FromDigitsToBigInteger(IEnumerable<int> digits)
         {
+            return FromDigitsToBigInteger(digits, false);
+        }
+
+        public static BigInteger FromDigitsToBigInteger(IEnumerable<int> digits, bool reverse)
+        {
             if (digits == null)
             {
                 throw new ArgumentNullException("digits");
@@ -147,6 +163,11 @@ namespace Ckknight.ProjectEuler
 
             BigInteger total = 0;
             BigInteger power = 1;
+
+            if (reverse)
+            {
+                digits = digits.Reverse();
+            }
 
             foreach (int digit in digits)
             {
@@ -316,6 +337,103 @@ namespace Ckknight.ProjectEuler
             return result;
         }
 
+        public static decimal Pow(decimal number, long exponent)
+        {
+            if (number == 0m)
+            {
+                return 0m;
+            }
+            else if (exponent == 0L || number == 1m)
+            {
+                return 1m;
+            }
+            else if (exponent == 1L)
+            {
+                return number;
+            }
+            else if (exponent == 2L)
+            {
+                return number * number;
+            }
+            else if (exponent < 0L)
+            {
+                throw new ArgumentOutOfRangeException("exponent", exponent, "Must be at least 0");
+            }
+            else if (number == -1m)
+            {
+                if ((exponent & 1L) == 0)
+                {
+                    return 1m;
+                }
+                else
+                {
+                    return -1m;
+                }
+            }
+
+            decimal result = 1m;
+            while (exponent != 0L)
+            {
+                if ((exponent & 1L) != 0L)
+                {
+                    result *= number;
+                }
+                exponent >>= 1;
+                number *= number;
+            }
+
+            return result;
+        }
+
+        private static readonly BigInteger intMaxValueAsBigInteger = new BigInteger(int.MaxValue);
+        public static BigInteger Pow(BigInteger number, BigInteger exponent)
+        {
+            if (number.IsZero)
+            {
+                return BigInteger.Zero;
+            }
+            else if (exponent.IsZero || number.IsOne)
+            {
+                return BigInteger.One;
+            }
+            else if (exponent.IsOne)
+            {
+                return number;
+            }
+            else if (exponent.Sign < 0)
+            {
+                throw new ArgumentOutOfRangeException("exponent", exponent, "Must be at least 0");
+            }
+            else if (exponent <= intMaxValueAsBigInteger)
+            {
+                return BigInteger.Pow(number, (int)exponent);
+            }
+            else if (number == BigInteger.MinusOne)
+            {
+                if (exponent.IsEven)
+                {
+                    return BigInteger.One;
+                }
+                else
+                {
+                    return BigInteger.MinusOne;
+                }
+            }
+
+            BigInteger result = BigInteger.One;
+            while (!exponent.IsZero)
+            {
+                if (!exponent.IsEven)
+                {
+                    result *= number;
+                }
+                exponent >>= 1;
+                number *= number;
+            }
+
+            return result;
+        }
+
         public static long ModPow(long number, long exponent, long modulus)
         {
             if (modulus == 1L)
@@ -450,6 +568,16 @@ namespace Ckknight.ProjectEuler
             return new PrimeFactorGenerator(n)
                 .Distinct()
                 .Aggregate(n, (x, p) => x * (p - 1) / p);
+        }
+
+        public static Random CreateRandom()
+        {
+            var rng = RandomNumberGenerator.Create();
+            byte[] buffer = new byte[4];
+            rng.GetBytes(buffer);
+            int seed = BitConverter.ToInt32(buffer, 0);
+
+            return new Random(seed);
         }
     }
 }

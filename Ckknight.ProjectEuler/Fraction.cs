@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
 
 namespace Ckknight.ProjectEuler
 {
-    public struct Fraction : IComparable<Fraction>, IEquatable<Fraction>
+    [Serializable]
+    public struct Fraction : IComparable<Fraction>, IEquatable<Fraction>, ISerializable
     {
         public Fraction(long numerator)
             : this(numerator, 1) { }
@@ -640,5 +642,18 @@ namespace Ckknight.ProjectEuler
 
             return new Fraction((long)number, denominator);
         }
+
+        #region ISerializable Members
+        
+        private Fraction(SerializationInfo info, StreamingContext context)
+            : this(info.GetInt64("n"), info.GetInt64("d")) { }
+
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("n", _numerator);
+            info.AddValue("d", _denominator);
+        }
+
+        #endregion
     }
 }

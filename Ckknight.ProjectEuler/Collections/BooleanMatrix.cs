@@ -9,6 +9,9 @@ namespace Ckknight.ProjectEuler.Collections
     public class BooleanMatrix
     {
         public BooleanMatrix(int width, int height)
+            : this(width, height, false) { }
+
+        public BooleanMatrix(int width, int height, bool defaultValue)
         {
             if (width < 0)
             {
@@ -27,6 +30,10 @@ namespace Ckknight.ProjectEuler.Collections
             _height = height;
 
             _data = new byte[GetDataLength(width, height)];
+            if (defaultValue)
+            {
+                SetAll(true);
+            }
         }
 
         public BooleanMatrix(BooleanMatrix source)
@@ -90,6 +97,16 @@ namespace Ckknight.ProjectEuler.Collections
             }
 
             _data[majorOffset] = current;
+        }
+
+        public void SetAll(bool value)
+        {
+            int length = _data.Length;
+            byte byteValue = value ? byte.MaxValue : (byte)0;
+            for (int i = 0; i < length; i++)
+            {
+                _data[i] = byteValue;
+            }
         }
 
         private static int GetDataLength(int width, int height)

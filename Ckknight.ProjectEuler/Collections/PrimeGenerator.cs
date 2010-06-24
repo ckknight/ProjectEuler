@@ -7,7 +7,7 @@ using System.Collections.Concurrent;
 
 namespace Ckknight.ProjectEuler.Collections
 {
-    public class PrimeGenerator : IEnumerable<long>, IEnumerable
+    public sealed class PrimeGenerator : IEnumerable<long>, IEnumerable
     {
         private PrimeGenerator()
         {
@@ -47,7 +47,7 @@ namespace Ckknight.ProjectEuler.Collections
             }
         }
 
-        public void CalculateNextChuck()
+        private void CalculateNextChunk()
         {
             CalculatePrimes(_calculatedUpTo + 1, StandardPrimeCalculationChunkSize);
         }
@@ -129,7 +129,7 @@ namespace Ckknight.ProjectEuler.Collections
                     }
                 } while (count < _primes.Count);
 
-                CalculateNextChuck();
+                CalculateNextChunk();
             }
         }
 
@@ -159,7 +159,7 @@ namespace Ckknight.ProjectEuler.Collections
 
             while (_primes.Count <= index)
             {
-                CalculateNextChuck();
+                CalculateNextChunk();
             }
 
             return _primes[index];

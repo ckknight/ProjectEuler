@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ckknight.ProjectEuler;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
+using System.IO;
 
 namespace Ckknight.ProjectEulerTest
 {
@@ -558,6 +561,42 @@ namespace Ckknight.ProjectEulerTest
         public void Abs_NegativeInfinity()
         {
             Assert.AreEqual(Fraction.PositiveInfinity, Fraction.Abs(Fraction.NegativeInfinity));
+        }
+
+        [TestMethod]
+        public void Serialization()
+        {
+            foreach (Fraction fraction in new[] { Fraction.NegativeInfinity, Fraction.PositiveInfinity, Fraction.NaN, Fraction.Zero, Fraction.One, Fraction.Epsilon, new Fraction(long.MaxValue - 1, long.MaxValue) })
+            {
+                IFormatter formatter = new BinaryFormatter();
+                var stream = new MemoryStream();
+                formatter.Serialize(stream, fraction);
+                stream.Seek(0, SeekOrigin.Begin);
+
+                object obj = formatter.Deserialize(stream);
+                stream.Close();
+                Assert.IsInstanceOfType(obj, typeof(Fraction));
+                Fraction otherFraction = (Fraction)obj;
+                Assert.AreEqual(fraction, otherFraction);
+            }
+        }
+
+        [TestMethod]
+        public void BigSerialization()
+        {
+            foreach (BigFraction fraction in new[] { BigFraction.NegativeInfinity, BigFraction.PositiveInfinity, BigFraction.NaN, BigFraction.Zero, BigFraction.One, BigFraction.Pow(new BigFraction(long.MaxValue - 1, long.MaxValue), 10) })
+            {
+                IFormatter formatter = new BinaryFormatter();
+                var stream = new MemoryStream();
+                formatter.Serialize(stream, fraction);
+                stream.Seek(0, SeekOrigin.Begin);
+
+                object obj = formatter.Deserialize(stream);
+                stream.Close();
+                Assert.IsInstanceOfType(obj, typeof(BigFraction));
+                BigFraction otherFraction = (BigFraction)obj;
+                Assert.AreEqual(fraction, otherFraction);
+            }
         }
     }
 }

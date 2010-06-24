@@ -38,6 +38,10 @@ namespace Ckknight.ProjectEuler.Collections
                     x.UnionWith(x.Select(v => v * primeFactor).ToArray());
                     return x;
                 });
+            if (!_includeNumber)
+            {
+                divisors.Remove(_number);
+            }
             return divisors.GetEnumerator();
         }
 
@@ -51,5 +55,29 @@ namespace Ckknight.ProjectEuler.Collections
         }
 
         #endregion
+
+        public static long SumOfFactors(long number)
+        {
+            long value = number;
+            long sum = 1;
+            foreach (long prime in PrimeGenerator.Instance)
+            {
+                if (prime * prime > value)
+                {
+                    break;
+                }
+                long lastSum = sum;
+                while (value % prime == 0)
+                {
+                    value /= prime;
+                    sum = sum*prime + lastSum;
+                }
+            }
+            if (value > 1)
+            {
+                sum *= (value + 1);
+            }
+            return sum - number;
+        }
     }
 }

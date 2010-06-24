@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Numerics;
+using System.Runtime.Serialization;
 
 namespace Ckknight.ProjectEuler
 {
-    public struct BigFraction : IComparable<BigFraction>, IEquatable<BigFraction>
+    [Serializable]
+    public struct BigFraction : IComparable<BigFraction>, IEquatable<BigFraction>, ISerializable
     {
         public BigFraction(BigInteger numerator)
             : this(numerator, 1) { }
@@ -620,5 +622,18 @@ namespace Ckknight.ProjectEuler
 
             return new BigFraction((BigInteger)number, BigInteger.Pow(10, power));
         }
+        
+        #region ISerializable Members
+        
+        private BigFraction(SerializationInfo info, StreamingContext context)
+            : this((BigInteger)info.GetValue("n", typeof(BigInteger)), (BigInteger)info.GetValue("d", typeof(BigInteger))) { }
+
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("n", _numerator, typeof(BigInteger));
+            info.AddValue("d", _denominator, typeof(BigInteger));
+        }
+
+        #endregion
     }
 }
